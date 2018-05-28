@@ -1,120 +1,213 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  
-  <title>CentOs 7下安装JAVA环境 | Lyouth&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1.安装MySQLCentOS 7的yum源中貌似没有正常安装MySQL时的MySql-sever文件，需要去官网上下载,分为三个步骤：wget http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpmrpm -ivh mysql-community-release-el7-5.noarch.rpmyum install m">
-<meta name="keywords" content="Linux,Java">
-<meta property="og:type" content="article">
-<meta property="og:title" content="CentOs 7下安装JAVA环境">
-<meta property="og:url" content="https://www.liuyu.in/2017/09/08/CentOs-7-install-environment/index.html">
-<meta property="og:site_name" content="Lyouth&#39;s Blog">
-<meta property="og:description" content="1.安装MySQLCentOS 7的yum源中貌似没有正常安装MySQL时的MySql-sever文件，需要去官网上下载,分为三个步骤：wget http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpmrpm -ivh mysql-community-release-el7-5.noarch.rpmyum install m">
-<meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-04-20T14:22:58.602Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CentOs 7下安装JAVA环境">
-<meta name="twitter:description" content="1.安装MySQLCentOS 7的yum源中貌似没有正常安装MySQL时的MySql-sever文件，需要去官网上下载,分为三个步骤：wget http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpmrpm -ivh mysql-community-release-el7-5.noarch.rpmyum install m">
-  
-    <link rel="alternative" href="/atom.xml" title="Lyouth&#39;s Blog" type="application/atom+xml">
-  
-  
-  <link rel="stylesheet" href="/css/style.css">
-  
-    <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
-  
-  
-<script type="text/javascript">
-var isWX = /micromessenger/i.test(navigator.userAgent);
-if (isWX) {
-  document.write('<br/><br/><h1 style="text-align: center;font-size:32px;" >╮(╯_╰)╭</h1><br/><br/><h4 style="text-align: center;" >请在浏览器中打开。</h4><br/><h4 style="text-align: center;" >Please open in the browser.</h4>');
-  window.stop ? window.stop() : document.execCommand("Stop");
-}
-</script>
-
-
+    <meta charset="utf-8">
+    
+    
+    <title>CentOs 7下安装JAVA环境 | Lyouth&#39;s Blog | 分享资源、教程</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="Linux,Java">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.2.8">
+    
+    <script type="text/javascript">
+        // Data Center
+        var DC = {
+            reward:	true,
+            lv: JSON.parse('{"enable":false,"app_id":null,"app_key":null,"icon":true}'),
+            v: JSON.parse('{"enable":false,"appid":null,"appkey":null,"notify":true,"verify":true,"placeholder":"give me some sugers plz...","avatar":"wavatar"}'),
+            g: JSON.parse('{"enable":false,"lazy":true,"owner":"codefine","repo":"gitment","oauth":{"client_id":null,"client_secret":null},"perPage":10}')
+        };
+    </script>
+    <script type="text/javascript">
+        window.lazyScripts=[];
+    </script>
 </head>
 
+
 <body>
-<div id="container">
-  <div id="wrap">
-    <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <nav id="upper-nav" class="inner">
-      <a id="main-nav-toggle" class="nav-icon"></a>
-      <div class="sub-nav">
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      
+      <img src="/img/brand.jpg" class="brand-bg">
+      
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Liuyu</h5>
+          <a href="mailto:i@liuyu.in" title="i@liuyu.in" class="mail">
+            
+              <span>i</span>
+            
+              <span>@</span>
+            
+              <span>l</span>
+            
+              <span>i</span>
+            
+              <span>u</span>
+            
+              <span>y</span>
+            
+              <span>u</span>
+            
+              <span>.</span>
+            
+              <span>i</span>
+            
+              <span>n</span>
+            
+          </a>
+        </hgroup>
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        
-          <a id="nav-github" class="nav-icon" href="https://github.com/liuyu1994"></a>
+        <ul class="menu-link">
+          
+              <li>
+                <a href="https://github.com/lyouths" target="_blank">
+                  <i class="icon icon-lg icon-github"></i>
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://weibo.com/puzzors" target="_blank">
+                  <i class="icon icon-lg icon-weibo"></i>
+                </a>
+              </li>
+            
+        </ul>
         
       </div>
-    </nav>
-    <div id="header-title">
-      
-        <h1 id="blog-title-wrap">
-          <a href="/" id="blog-title">Lyouth&#39;s Blog</a>
-        </h1>
-      
     </div>
-    <div id="contenedor">
-      <ul class="cube">
-        <li class="cara">MyLogo</li>
-        <li class="cara"></li>
-        <li class="cara"></li>
-        <li class="cara"></li>
-        <li class="cara"></li>
-        <li class="cara"></li>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                HOME
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                CATEGORIES
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                TAGS
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                ARCHIVES
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-user"></i>
+                ABOUT
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/custom"  >
+                <i class="icon icon-lg icon-plus-square"></i>
+                CUSTOM
+              </a>
+            </li>
+        
       </ul>
     </div>
-    <nav id="main-nav">
-      
-        <a class="main-nav-link" href="/">Home</a>
-      
-        <a class="main-nav-link" href="/archives">Archives</a>
-      
-        <a class="main-nav-link" href="/about">About</a>
-      
-      <a class="main-nav-link st-search-show-outputs">Search</a>
-    </nav>
   </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row clearfix">
+        <a href="javascript:;" class="header-icon pull-left waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">
+            <span>CentOs 7下安装JAVA环境</span>
+            
+        </div>
+        
+        <a href="javascript:;" id="site_search_btn" class="header-icon pull-right waves-effect waves-circle waves-light">
+            <i class="icon icon-lg icon-search"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+    <img src="/img/banner.jpg" class="header-bg">
+    <div class="container fade-scale">
+        <h1 class="title">CentOs 7下安装JAVA环境</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-09-08T08:09:11.000Z" itemprop="datePublished" class="page-time">
+  2017-09-08
+</time>
+
+
+            
+        </h5>
+        
+    </div>
+    
+
 </header>
 
-    <div class="outer">
-      <section id="main"><article id="post-CentOs-7-install-environment" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <h3 href="/2017/09/08/CentOs-7-install-environment/" class="article-date">
-  <time datetime="2017-09-08T08:09:11.000Z" itemprop="datePublished">2017-09-08</time>
-</h3>
-    
-  </div>
-  <div class="article-inner">
-  <div class="curve-down">
-  <div class="fill-content">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      CentOs 7下安装JAVA环境
-    </h1>
-  
+<div id="site_search">
+    <div class="search-title clearfix">
+        <span class="pull-left">
+          <i class="icon icon-lg icon-search"></i>
+        </span>
+        <input type="text" id="local-search-input" name="q" results="0" placeholder="search my blog..." class="form-control pull-left"/>
+        <a href="javascript:;" class="close pull-right waves-effect waves-circle waves-light">
+          <i class="icon icon-lg icon-close"></i>
+        </a>
+    </div>
+    <div id="local-search-result"></div>
+</div>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-        <h3 id="1-安装MySQL"><a href="#1-安装MySQL" class="headerlink" title="1.安装MySQL"></a>1.安装MySQL</h3><h5 id="CentOS-7的yum源中貌似没有正常安装MySQL时的MySql-sever文件，需要去官网上下载-分为三个步骤："><a href="#CentOS-7的yum源中貌似没有正常安装MySQL时的MySql-sever文件，需要去官网上下载-分为三个步骤：" class="headerlink" title="CentOS 7的yum源中貌似没有正常安装MySQL时的MySql-sever文件，需要去官网上下载,分为三个步骤："></a>CentOS 7的yum源中貌似没有正常安装MySQL时的MySql-sever文件，需要去官网上下载,分为三个步骤：</h5><p><code>wget http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm</code><br><code>rpm -ivh mysql-community-release-el7-5.noarch.rpm</code><br><code>yum install mysql-community-server</code><br><a id="more"></a></p>
+
+<div class="container body-wrap">
+    <article id="post-CentOs-7-install-environment"
+  class="post-article article-type-post" itemprop="blogPost">
+    <div class="post-card">
+        <h1 class="post-card-title">CentOs 7下安装JAVA环境</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-09-08 16:09:11" datetime="2017-09-08T08:09:11.000Z"  itemprop="datePublished">2017-09-08</time>
+
+            
+
+
+            
+
+            
+
+
+            
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            <h3 id="1-安装MySQL"><a href="#1-安装MySQL" class="headerlink" title="1.安装MySQL"></a>1.安装MySQL</h3><h5 id="CentOS-7的yum源中貌似没有正常安装MySQL时的MySql-sever文件，需要去官网上下载-分为三个步骤："><a href="#CentOS-7的yum源中貌似没有正常安装MySQL时的MySql-sever文件，需要去官网上下载-分为三个步骤：" class="headerlink" title="CentOS 7的yum源中貌似没有正常安装MySQL时的MySql-sever文件，需要去官网上下载,分为三个步骤："></a>CentOS 7的yum源中貌似没有正常安装MySQL时的MySql-sever文件，需要去官网上下载,分为三个步骤：</h5><p><code>wget http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm</code><br><code>rpm -ivh mysql-community-release-el7-5.noarch.rpm</code><br><code>yum install mysql-community-server</code><br><a id="more"></a></p>
 <h5 id="成功安装之后重启mysql服务："><a href="#成功安装之后重启mysql服务：" class="headerlink" title="成功安装之后重启mysql服务："></a>成功安装之后重启mysql服务：</h5><p><code>service mysqld restart</code></p>
 <h5 id="初次安装mysql是root账户是没有密码的，设置密码的方法，先登录数据库；"><a href="#初次安装mysql是root账户是没有密码的，设置密码的方法，先登录数据库；" class="headerlink" title="初次安装mysql是root账户是没有密码的，设置密码的方法，先登录数据库；"></a>初次安装mysql是root账户是没有密码的，设置密码的方法，先登录数据库；</h5><p><code>use mysql;</code><br><code>UPDATE user SET Password=PASSWORD(&#39;yourpassword&#39;)where USER=&#39;root&#39;;</code><br><code>flush privileges;</code></p>
 <h5 id="远程授权连接mysql-可以使用第三方可视化管理工具进行连接，这里是针对服务器的"><a href="#远程授权连接mysql-可以使用第三方可视化管理工具进行连接，这里是针对服务器的" class="headerlink" title="远程授权连接mysql(可以使用第三方可视化管理工具进行连接，这里是针对服务器的)"></a>远程授权连接mysql(可以使用第三方可视化管理工具进行连接，这里是针对服务器的)</h5><p><code>GRANT ALL PRIVILEGES ON *.* TO&#39;root&#39;@&#39;%&#39; IDENTIFIED BY &#39;mypassword&#39; WITH GRANT OPTION;</code><br><code>FLUSH   PRIVILEGES;</code></p>
@@ -134,143 +227,288 @@ if (isWX) {
 <p>将该设置添加到防火墙的规则中<br><code>/etc/rc.d/init.d/iptables save</code></p>
 <p>注意:<br>查看日志文件<br><code>tail -f logs/catalina.out</code><br>退出 ctrl+c</p>
 <h3 id="大功告成"><a href="#大功告成" class="headerlink" title="大功告成~"></a>大功告成~</h3>
-      
-    </div>
-    <footer class="article-footer">
-      <div class="article-footer-content">
+        </div>
         
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+<blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2018-04-20T14:22:58.602Z" itemprop="dateUpdated">2018-04-20 22:22:58</time>
+</span><br>
 
-        <a data-url="https://www.liuyu.in/2017/09/08/CentOs-7-install-environment/" data-id="cjhq8wdmx000020uk3krg0kej" class="article-share-link">Share</a>
+
         
-      </div>
+        转载注明出处，原文地址：<a href="/2017/09/08/CentOs-7-install-environment/" target="_blank" rel="external">https://www.liuyu.in/2017/09/08/CentOs-7-install-environment/</a>
+        
+    </div>
+    <footer>
+        <a href="https://www.liuyu.in">
+            <img src="/img/avatar.jpg" alt="Liuyu">
+            Liuyu
+        </a>
     </footer>
-  </div>
-  </div>
-  </div>
-  
+</blockquote>
+
+        
+            <div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+            
+        
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+
+            <div class="page-share-wrap">
     
-<nav id="article-nav">
-  
-    <a href="/2018/04/26/MyBatisTrendsSQL/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          MyBatis之动态SQL
-        
-      </div>
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.liuyu.in/2017/09/08/CentOs-7-install-environment/&title=《CentOs 7下安装JAVA环境》 — Lyouth's Blog&pic=https://www.liuyu.in/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.liuyu.in/2017/09/08/CentOs-7-install-environment/&title=《CentOs 7下安装JAVA环境》 — Lyouth's Blog&source=1.安装MySQLCentOS 7的yum源中貌似没有正常安装MySQL时的MySql-sever文件，需要去官网上下载,分为三个步骤：wget http..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
     </a>
+</div>
+
+        </div>
+        
+            
+
+
+        
+    </div>
+    
+<nav class="post-nav flex-row flex-justify-between">
   
+    <div class="prev">
+      <a href="/2018/04/26/MyBatisTrendsSQL/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">MyBatis之动态SQL</h4>
+      </a>
+    </div>
+  
+
   
 </nav>
 
-  
+
+    
+    
+        <aside class="post-widget">
+            <nav class="post-toc-wrap" id="post-toc">
+                <strong>目录</strong>
+                <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-安装MySQL"><span class="post-toc-number">1.</span> <span class="post-toc-text">1.安装MySQL</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-安装JDK"><span class="post-toc-number">2.</span> <span class="post-toc-text">2.安装JDK</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-安装Tomcat"><span class="post-toc-number">3.</span> <span class="post-toc-text">3.安装Tomcat</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#大功告成"><span class="post-toc-number">4.</span> <span class="post-toc-text">大功告成~</span></a></li></ol>
+            </nav>
+            <div class="toc-bar"><div>
+        </aside>
+    
 </article>
 
+    <div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        我们一起来让这个世界有趣一点
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/reward-wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/reward-wechat.jpg" data-alipay="/img/reward-alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
 
-</section>
-      
-      <aside id="sidebar">
-  
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recents</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/05/28/PracticeSpringMvc/">Spring MVC快速入门(一)</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/28/PracticeMysql/">MySQL语法查漏补缺</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/28/PracticeJDBC/">Java学习笔记之JDBC</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/28/PracticeMyBatis/">初识MyBatis</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/28/MyBatisMappered/">MyBatis输入映射和输出映射</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+</div>
 
-  
+        <footer class="footer">
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Mvc/">Spring Mvc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdbc/">jdbc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/">mybatis</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li></ul>
-    </div>
-  </div>
-
-  
+    <div class="top">
+        
+        
+            <p>
+    <span>Links：</span>
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li></ul>
-    </div>
-  </div>
+    <span class="blogroll-item">
+        <a href="https://www.liuyu.pw" target="_blank">HOME</a>
+    </span>
+    
+</p>
 
-  
-</aside>
-      
+        
     </div>
-    <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2018 Liuyu<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-      .
-      Theme by <a href="https://github.com/sun11/hexo-theme-paperbox" target="_blank">Paperbox</a>
+    
+    <div class="bottom">
+        <p>
+            <span>
+                Liuyu &copy; 2017 - 2018
+            </span>
+        		
+           	
+            
+            
+            <span>
+	            Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/codefine/hexo-theme-mellow" target="_blank">mellow</a>
+            </span>
+            
+            
+            
+        </p>
     </div>
-  </div>
 </footer>
-  </div>
-  <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-    <a href="/about" class="mobile-nav-link">About</a>
-  
-  <a href="#search" class="mobile-nav-link st-search-show-outputs">Search</a>
-</nav>
-  
 
-<!-- totop start -->
-<div id="totop">
-	<a title="To Top"></a>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.liuyu.in/2017/09/08/CentOs-7-install-environment/&title=《CentOs 7下安装JAVA环境》 — Lyouth's Blog&pic=https://www.liuyu.in/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.liuyu.in/2017/09/08/CentOs-7-install-environment/&title=《CentOs 7下安装JAVA环境》 — Lyouth's Blog&source=1.安装MySQLCentOS 7的yum源中貌似没有正常安装MySQL时的MySql-sever文件，需要去官网上下载,分为三个步骤：wget http..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLElEQVR42u3ay27DMAxEUf//T7tAVwFcKzNDqYCoq1XgJI5PFgRf1yWf+/c8r3yet3efdxi/ft5t2oEBA8a2jHt4xgz9Ucb3H+OV78KAAeMExjjIKrBxDHTDrv5sMGDAgKHc2g3ZWUIJAwYMGPWAq1xx7wwDBgwYbrh0y876oy+pxWHAgLEhwx0M/OfrhfMNGDBgbMK4zaMnglnAzQ4MGDB6M1YUn3pqqIw2jYEEDBgwmjL01Qc3XXNXN/QC+I8rMGDAOIyhP7T+KFkwnTwSgAEDxrYMJai5iWOFofPsPBcGDBjbMrJ1iqzU1K+M/+/XriEMGDAOYGTJop5Q6i02dwUEBgwYpzGyMUB9hOAOFb4EXBgwYLRjzBo92rNTs4X3WujCgAGjNaO+SKonhdlnjGEnDBgwmjL0pG3d4LPStoMBA8ZpjGz+maWS+oqG9FswYMA4jKE0zsIMVC6D9QYfDBgwzmFc0XGb+/qQwP77YMCA0ZqRrWdlqxUuyR6dwoABoykjC396yTqrSWfEfhgwYDRl6MsTcwcGS7bbYMCA0Y6RtcZmLVVkofb1WzBgwGjKuM1TSQezlQupwIYBA0ZrRiXMKUsVelKYrWvAgAHjHIYbZMff0gcD2VhCGg/AgAGjKUPvt+v1sTvszPr/MGDAgFEZSbpBXEkBjZ0RGDBgHMzIwmt9GDA54MKAAWNDRhY6pR+I2vp2cQsDBozWjKyAzB4rWxRT3oUBA0ZTxg+CIqh2jT9Q2AAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
-<!-- totop end -->
-
-<!-- swiftype search start -->
-
-<!-- swiftype search end -->
 
 
+    
+    <!-- main-js -->
+<script type="text/javascript" src="//cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript" src="/js/plugins/fastclick.js?v=1.2.8"></script>
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/lrsjng.jquery-qrcode/0.12.0/jquery.qrcode.min.js"></script>
+<script type="text/javascript" src="/js/method.js?v=1.2.8"></script>
+<script type="text/javascript" src="/js/blog.js?v=1.2.8"></script>
+
+<!-- third-party -->
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
 
 
-<script src="/js/script.js"></script>
 
-</div>
+<script type="text/javascript" src="/js/plugins/local_search.js?v=1.2.8"></script>
+<script type="text/javascript">
+	var search_path = "search.xml";
+	if (search_path.length === 0) {
+		search_path = "search.xml";
+	}
+	var path = "/" + search_path;
+	searchFunc(path, "local-search-input", "local-search-result");
+</script>
+
+
+
+    
+    
+
+
+
+
+
+    <!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+            processEscapes: true,
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+    <script>
+    (function() {
+        var OriginTitile = document.title, titleTime;
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                document.title = '死鬼去哪里了！';
+                clearTimeout(titleTime);
+            } else {
+                document.title = '(つェ⊂)咦!又好了!';
+                titleTime = setTimeout(function() {
+                    document.title = OriginTitile;
+                },2000);
+            }
+        });
+    })();
+</script>
+
+
+    
 </body>
 </html>

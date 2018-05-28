@@ -1,129 +1,217 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  
-  <title>Java学习笔记之JDBC | Lyouth&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1.概念Jdbc(java database connectivity):Java数据库连接，就是用Java语言来操作数据库。原来我们操作数据库是在控制台中通过sql语句来操作数据库，而Jdbc是用Java语言来向数据库发送sql语句来操作数据库。">
-<meta name="keywords" content="jdbc">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Java学习笔记之JDBC">
-<meta property="og:url" content="https://www.liuyu.in/2018/05/28/PracticeJDBC/index.html">
-<meta property="og:site_name" content="Lyouth&#39;s Blog">
-<meta property="og:description" content="1.概念Jdbc(java database connectivity):Java数据库连接，就是用Java语言来操作数据库。原来我们操作数据库是在控制台中通过sql语句来操作数据库，而Jdbc是用Java语言来向数据库发送sql语句来操作数据库。">
-<meta property="og:locale" content="default">
-<meta property="og:image" content="http://owtr5yq3h.bkt.clouddn.com/%E8%AE%A2%E5%8D%95%E8%A1%A8%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://owtr5yq3h.bkt.clouddn.com/%E7%94%A8%E6%88%B7%E8%A1%A8%E6%88%AA%E5%9B%BE.png">
-<meta property="og:image" content="http://owtr5yq3h.bkt.clouddn.com/jar%E5%8C%85.png">
-<meta property="og:image" content="http://owtr5yq3h.bkt.clouddn.com/jdbc%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png">
-<meta property="og:updated_time" content="2018-04-20T14:23:48.313Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java学习笔记之JDBC">
-<meta name="twitter:description" content="1.概念Jdbc(java database connectivity):Java数据库连接，就是用Java语言来操作数据库。原来我们操作数据库是在控制台中通过sql语句来操作数据库，而Jdbc是用Java语言来向数据库发送sql语句来操作数据库。">
-<meta name="twitter:image" content="http://owtr5yq3h.bkt.clouddn.com/%E8%AE%A2%E5%8D%95%E8%A1%A8%E6%88%AA%E5%9B%BE.png">
-  
-    <link rel="alternative" href="/atom.xml" title="Lyouth&#39;s Blog" type="application/atom+xml">
-  
-  
-  <link rel="stylesheet" href="/css/style.css">
-  
-    <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
-  
-  
-<script type="text/javascript">
-var isWX = /micromessenger/i.test(navigator.userAgent);
-if (isWX) {
-  document.write('<br/><br/><h1 style="text-align: center;font-size:32px;" >╮(╯_╰)╭</h1><br/><br/><h4 style="text-align: center;" >请在浏览器中打开。</h4><br/><h4 style="text-align: center;" >Please open in the browser.</h4>');
-  window.stop ? window.stop() : document.execCommand("Stop");
-}
-</script>
-
-
+    <meta charset="utf-8">
+    
+    
+    <title>Java学习笔记之JDBC | Lyouth&#39;s Blog | 分享资源、教程</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="jdbc">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.2.8">
+    
+    <script type="text/javascript">
+        // Data Center
+        var DC = {
+            reward:	true,
+            lv: JSON.parse('{"enable":false,"app_id":null,"app_key":null,"icon":true}'),
+            v: JSON.parse('{"enable":false,"appid":null,"appkey":null,"notify":true,"verify":true,"placeholder":"give me some sugers plz...","avatar":"wavatar"}'),
+            g: JSON.parse('{"enable":false,"lazy":true,"owner":"codefine","repo":"gitment","oauth":{"client_id":null,"client_secret":null},"perPage":10}')
+        };
+    </script>
+    <script type="text/javascript">
+        window.lazyScripts=[];
+    </script>
 </head>
 
+
 <body>
-<div id="container">
-  <div id="wrap">
-    <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <nav id="upper-nav" class="inner">
-      <a id="main-nav-toggle" class="nav-icon"></a>
-      <div class="sub-nav">
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      
+      <img src="/img/brand.jpg" class="brand-bg">
+      
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Liuyu</h5>
+          <a href="mailto:i@liuyu.in" title="i@liuyu.in" class="mail">
+            
+              <span>i</span>
+            
+              <span>@</span>
+            
+              <span>l</span>
+            
+              <span>i</span>
+            
+              <span>u</span>
+            
+              <span>y</span>
+            
+              <span>u</span>
+            
+              <span>.</span>
+            
+              <span>i</span>
+            
+              <span>n</span>
+            
+          </a>
+        </hgroup>
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        
-          <a id="nav-github" class="nav-icon" href="https://github.com/liuyu1994"></a>
+        <ul class="menu-link">
+          
+              <li>
+                <a href="https://github.com/lyouths" target="_blank">
+                  <i class="icon icon-lg icon-github"></i>
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://weibo.com/puzzors" target="_blank">
+                  <i class="icon icon-lg icon-weibo"></i>
+                </a>
+              </li>
+            
+        </ul>
         
       </div>
-    </nav>
-    <div id="header-title">
-      
-        <h1 id="blog-title-wrap">
-          <a href="/" id="blog-title">Lyouth&#39;s Blog</a>
-        </h1>
-      
     </div>
-    <div id="contenedor">
-      <ul class="cube">
-        <li class="cara">MyLogo</li>
-        <li class="cara"></li>
-        <li class="cara"></li>
-        <li class="cara"></li>
-        <li class="cara"></li>
-        <li class="cara"></li>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                HOME
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                CATEGORIES
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                TAGS
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                ARCHIVES
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-user"></i>
+                ABOUT
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/custom"  >
+                <i class="icon icon-lg icon-plus-square"></i>
+                CUSTOM
+              </a>
+            </li>
+        
       </ul>
     </div>
-    <nav id="main-nav">
-      
-        <a class="main-nav-link" href="/">Home</a>
-      
-        <a class="main-nav-link" href="/archives">Archives</a>
-      
-        <a class="main-nav-link" href="/about">About</a>
-      
-      <a class="main-nav-link st-search-show-outputs">Search</a>
-    </nav>
   </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row clearfix">
+        <a href="javascript:;" class="header-icon pull-left waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">
+            <span>Java学习笔记之JDBC</span>
+            
+        </div>
+        
+        <a href="javascript:;" id="site_search_btn" class="header-icon pull-right waves-effect waves-circle waves-light">
+            <i class="icon icon-lg icon-search"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+    <img src="/img/banner.jpg" class="header-bg">
+    <div class="container fade-scale">
+        <h1 class="title">Java学习笔记之JDBC</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-05-28T12:35:50.625Z" itemprop="datePublished" class="page-time">
+  2018-05-28
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/jdbc/">jdbc</a></li></ul>
+
+            
+        </h5>
+        
+    </div>
+    
+
 </header>
 
-    <div class="outer">
-      <section id="main"><article id="post-PracticeJDBC" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <h3 href="/2018/05/28/PracticeJDBC/" class="article-date">
-  <time datetime="2018-05-28T12:35:50.625Z" itemprop="datePublished">2018-05-28</time>
-</h3>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/jdbc/">jdbc</a>
-  </div>
+<div id="site_search">
+    <div class="search-title clearfix">
+        <span class="pull-left">
+          <i class="icon icon-lg icon-search"></i>
+        </span>
+        <input type="text" id="local-search-input" name="q" results="0" placeholder="search my blog..." class="form-control pull-left"/>
+        <a href="javascript:;" class="close pull-right waves-effect waves-circle waves-light">
+          <i class="icon icon-lg icon-close"></i>
+        </a>
+    </div>
+    <div id="local-search-result"></div>
+</div>
 
-  </div>
-  <div class="article-inner">
-  <div class="curve-down">
-  <div class="fill-content">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      Java学习笔记之JDBC
-    </h1>
-  
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-        <h1 id="1-概念"><a href="#1-概念" class="headerlink" title="1.概念"></a>1.概念</h1><p>Jdbc(java database connectivity):Java数据库连接，就是用Java语言来操作数据库。原来我们操作数据库是在控制台中通过sql语句来操作数据库，而Jdbc是用Java语言来向数据库发送sql语句来操作数据库。<br><a id="more"></a></p>
+<div class="container body-wrap">
+    <article id="post-PracticeJDBC"
+  class="post-article article-type-post" itemprop="blogPost">
+    <div class="post-card">
+        <h1 class="post-card-title">Java学习笔记之JDBC</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-05-28 20:35:50" datetime="2018-05-28T12:35:50.625Z"  itemprop="datePublished">2018-05-28</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/jdbc/">jdbc</a></li></ul>
+
+
+
+            
+
+            
+
+
+            
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            <h1 id="1-概念"><a href="#1-概念" class="headerlink" title="1.概念"></a>1.概念</h1><p>Jdbc(java database connectivity):Java数据库连接，就是用Java语言来操作数据库。原来我们操作数据库是在控制台中通过sql语句来操作数据库，而Jdbc是用Java语言来向数据库发送sql语句来操作数据库。<br><a id="more"></a></p>
 <h1 id="2-流程"><a href="#2-流程" class="headerlink" title="2.流程"></a>2.流程</h1><h2 id="2-1得到Connection对象"><a href="#2-1得到Connection对象" class="headerlink" title="2.1得到Connection对象"></a>2.1得到Connection对象</h2><ul>
 <li>1.导jar包。mysql-connector-java jar</li>
 <li>2.加载驱动类:Class.forName(“类名”);</li>
@@ -142,10 +230,19 @@ if (isWX) {
 <p>插入订单表数据：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO `orders` VALUES (&apos;3&apos;, &apos;1&apos;, &apos;1000010&apos;, &apos;2015-02-04 13:22:35&apos;, null);</span><br><span class="line">INSERT INTO `orders` VALUES (&apos;4&apos;, &apos;1&apos;, &apos;1000011&apos;, &apos;2015-02-03 13:22:41&apos;, null);</span><br><span class="line">INSERT INTO `orders` VALUES (&apos;5&apos;, &apos;10&apos;, &apos;1000012&apos;, &apos;2015-02-12 16:13:23&apos;, null);</span><br></pre></td></tr></table></figure></p>
 <p>创建用户表:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">DROP TABLE IF EXISTS `user`;</span><br><span class="line">CREATE TABLE `user` (</span><br><span class="line">  `id` int(11) NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `username` varchar(32) NOT NULL COMMENT &apos;用户名称&apos;,</span><br><span class="line">  `birthday` date DEFAULT NULL COMMENT &apos;生日&apos;,</span><br><span class="line">  `sex` char(1) DEFAULT NULL COMMENT &apos;性别&apos;,</span><br><span class="line">  `address` varchar(256) DEFAULT NULL COMMENT &apos;地址&apos;,</span><br><span class="line">  PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;</span><br></pre></td></tr></table></figure></p>
 <p>插入用户表数据:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO `user` VALUES (&apos;1&apos;, &apos;王五&apos;, null, &apos;2&apos;, null);</span><br><span class="line">INSERT INTO `user` VALUES (&apos;10&apos;, &apos;张三&apos;, &apos;2014-07-10&apos;, &apos;1&apos;, &apos;北京市&apos;);</span><br><span class="line">INSERT INTO `user` VALUES (&apos;16&apos;, &apos;张小明&apos;, null, &apos;1&apos;, &apos;河南郑州&apos;);</span><br><span class="line">INSERT INTO `user` VALUES (&apos;22&apos;, &apos;陈小明&apos;, null, &apos;1&apos;, &apos;河南郑州&apos;);</span><br><span class="line">INSERT INTO `user` VALUES (&apos;24&apos;, &apos;张三丰&apos;, null, &apos;1&apos;, &apos;河南郑州&apos;);</span><br><span class="line">INSERT INTO `user` VALUES (&apos;25&apos;, &apos;陈小明&apos;, null, &apos;1&apos;, &apos;河南郑州&apos;);</span><br><span class="line">INSERT INTO `user` VALUES (&apos;26&apos;, &apos;王五&apos;, null, null, null);</span><br></pre></td></tr></table></figure></p>
-<p>订单表如图：<br><img src="http://owtr5yq3h.bkt.clouddn.com/%E8%AE%A2%E5%8D%95%E8%A1%A8%E6%88%AA%E5%9B%BE.png" alt="订单表"></p>
-<p>用户表如图：<br><img src="http://owtr5yq3h.bkt.clouddn.com/%E7%94%A8%E6%88%B7%E8%A1%A8%E6%88%AA%E5%9B%BE.png" alt="用户表"></p>
+<p>订单表如图：<br><figure class="image-box">
+                <img src="http://owtr5yq3h.bkt.clouddn.com/%E8%AE%A2%E5%8D%95%E8%A1%A8%E6%88%AA%E5%9B%BE.png" alt="订单表" title="" class="">
+                <p>订单表</p>
+            </figure></p>
+<p>用户表如图：<br><figure class="image-box">
+                <img src="http://owtr5yq3h.bkt.clouddn.com/%E7%94%A8%E6%88%B7%E8%A1%A8%E6%88%AA%E5%9B%BE.png" alt="用户表" title="" class="">
+                <p>用户表</p>
+            </figure></p>
 <h1 id="4-创建项目"><a href="#4-创建项目" class="headerlink" title="4.创建项目"></a>4.创建项目</h1><p>开发环境：Intellij IDEA JDK1.8</p>
-<h3 id="4-1-创建一个java项目"><a href="#4-1-创建一个java项目" class="headerlink" title="4.1 创建一个java项目"></a>4.1 创建一个java项目</h3><h3 id="4-2-导入jar包，需要mysql的数据库驱动"><a href="#4-2-导入jar包，需要mysql的数据库驱动" class="headerlink" title="4.2 导入jar包，需要mysql的数据库驱动"></a>4.2 导入jar包，需要mysql的<a href="http://mvnrepository.com/artifact/mysql/mysql-connector-java" target="_blank" rel="noopener">数据库驱动</a></h3><p><img src="http://owtr5yq3h.bkt.clouddn.com/jar%E5%8C%85.png" alt="数据库驱动"></p>
+<h3 id="4-1-创建一个java项目"><a href="#4-1-创建一个java项目" class="headerlink" title="4.1 创建一个java项目"></a>4.1 创建一个java项目</h3><h3 id="4-2-导入jar包，需要mysql的数据库驱动"><a href="#4-2-导入jar包，需要mysql的数据库驱动" class="headerlink" title="4.2 导入jar包，需要mysql的数据库驱动"></a>4.2 导入jar包，需要mysql的<a href="http://mvnrepository.com/artifact/mysql/mysql-connector-java" target="_blank" rel="noopener">数据库驱动</a></h3><figure class="image-box">
+                <img src="http://owtr5yq3h.bkt.clouddn.com/jar%E5%8C%85.png" alt="数据库驱动" title="" class="">
+                <p>数据库驱动</p>
+            </figure>
 <h3 id="4-3-jdbc编程步骤："><a href="#4-3-jdbc编程步骤：" class="headerlink" title="4.3    jdbc编程步骤："></a>4.3    jdbc编程步骤：</h3><ul>
 <li>1.加载数据库驱动</li>
 <li>2.创建并获取数据库链接</li>
@@ -157,7 +254,10 @@ if (isWX) {
 <li>8.释放资源(resultSet、preparedstatement、connection)</li>
 </ul>
 <h3 id="4-4-jdbc程序"><a href="#4-4-jdbc程序" class="headerlink" title="4.4 jdbc程序"></a>4.4 jdbc程序</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.sql.*;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JDBCDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Connection connection=<span class="keyword">null</span>;</span><br><span class="line">        PreparedStatement preparedStatement = <span class="keyword">null</span>;</span><br><span class="line">        ResultSet resultSet = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//加载数据库驱动</span></span><br><span class="line">            Class.forName(<span class="string">"com.mysql.jdbc.Driver"</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//通过驱动管理类获取数据库链接</span></span><br><span class="line">            connection =  DriverManager.getConnection(<span class="string">"jdbc:mysql://localhost:3306/sqlpractice?characterEncoding=utf-8"</span>, <span class="string">"root"</span>, <span class="string">"1234"</span>);</span><br><span class="line">            <span class="comment">//定义sql语句 ?表示占位符</span></span><br><span class="line">            String sql = <span class="string">"select * from user where username = ?"</span>;</span><br><span class="line">            <span class="comment">//获取预处理statement</span></span><br><span class="line">            preparedStatement = connection.prepareStatement(sql);</span><br><span class="line">            <span class="comment">//设置参数，第一个参数为sql语句中参数的序号（从1开始），第二个参数为设置的参数值</span></span><br><span class="line">            preparedStatement.setString(<span class="number">1</span>, <span class="string">"王五"</span>);</span><br><span class="line">            <span class="comment">//向数据库发出sql执行查询，查询出结果集</span></span><br><span class="line">            resultSet =  preparedStatement.executeQuery();</span><br><span class="line">            <span class="comment">//遍历查询结果集</span></span><br><span class="line">            <span class="keyword">while</span>(resultSet.next())&#123;</span><br><span class="line">                System.out.println(resultSet.getString(<span class="string">"id"</span>)+<span class="string">"  "</span>+resultSet.getString(<span class="string">"username"</span>));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">            <span class="comment">//释放资源</span></span><br><span class="line">            <span class="keyword">if</span>(resultSet!=<span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    resultSet.close();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">                    <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(preparedStatement!=<span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    preparedStatement.close();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">                    <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(connection!=<span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    connection.close();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">                    <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>注意</strong>:上述中出现的Connection和Statement都应该导入java.mysql下的包，而不是java.jdbc下的包。<br>执行结果:<br><img src="http://owtr5yq3h.bkt.clouddn.com/jdbc%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png" alt="执行结果"><br>上边使用jdbc的原始方法（未经封装）实现了查询数据库表记录的操作。</p>
+<p><strong>注意</strong>:上述中出现的Connection和Statement都应该导入java.mysql下的包，而不是java.jdbc下的包。<br>执行结果:<br><figure class="image-box">
+                <img src="http://owtr5yq3h.bkt.clouddn.com/jdbc%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png" alt="执行结果" title="" class="">
+                <p>执行结果</p>
+            </figure><br>上边使用jdbc的原始方法（未经封装）实现了查询数据库表记录的操作。</p>
 <h3 id="4-5jdbc问题总结"><a href="#4-5jdbc问题总结" class="headerlink" title="4.5jdbc问题总结"></a>4.5jdbc问题总结</h3><ul>
 <li>1.数据库链接创建、释放频繁造成系统资源浪费从而影响系统性能，如果使用数据库链接池可解决此问题。</li>
 <li>2.Sql语句在代码中硬编码，造成代码不易维护，实际应用sql变化的可能较大，sql变动需要改变java代码。</li>
@@ -165,148 +265,295 @@ if (isWX) {
 <li>4.对结果集解析存在硬编码（查询列名），sql变化导致解析代码变化，系统不易维护，如果能将数据库记录封装成pojo对象解析比较方便。</li>
 </ul>
 
-      
-    </div>
-    <footer class="article-footer">
-      <div class="article-footer-content">
+        </div>
         
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jdbc/">jdbc</a></li></ul>
+<blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2018-04-20T14:23:48.313Z" itemprop="dateUpdated">2018-04-20 22:23:48</time>
+</span><br>
 
-        <a data-url="https://www.liuyu.in/2018/05/28/PracticeJDBC/" data-id="cjhq8wdnc000b20ukoc105i1q" class="article-share-link">Share</a>
+
         
-      </div>
+        转载注明出处，原文地址：<a href="/2018/05/28/PracticeJDBC/" target="_blank" rel="external">https://www.liuyu.in/2018/05/28/PracticeJDBC/</a>
+        
+    </div>
+    <footer>
+        <a href="https://www.liuyu.in">
+            <img src="/img/avatar.jpg" alt="Liuyu">
+            Liuyu
+        </a>
     </footer>
-  </div>
-  </div>
-  </div>
-  
+</blockquote>
+
+        
+            <div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+            
+        
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jdbc/">jdbc</a></li></ul>
+
+            <div class="page-share-wrap">
     
-<nav id="article-nav">
-  
-    <a href="/2018/05/28/PracticeMysql/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          MySQL语法查漏补缺
-        
-      </div>
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.liuyu.in/2018/05/28/PracticeJDBC/&title=《Java学习笔记之JDBC》 — Lyouth's Blog&pic=https://www.liuyu.in/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.liuyu.in/2018/05/28/PracticeJDBC/&title=《Java学习笔记之JDBC》 — Lyouth's Blog&source=1.概念Jdbc(java database connectivity):Java数据库连接，就是用Java语言来操作数据库。原来我们操作数据库是在控制台..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
     </a>
+</div>
+
+        </div>
+        
+            
+
+
+        
+    </div>
+    
+<nav class="post-nav flex-row flex-justify-between">
   
+    <div class="prev">
+      <a href="/2018/05/28/PracticeMyBatis/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">初识MyBatis</h4>
+      </a>
+    </div>
   
-    <a href="/2018/05/28/PracticeMyBatis/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">初识MyBatis</div>
-    </a>
+
+  
+    <div class="next">
+      <a href="/2018/05/28/MyBatisMappered/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">MyBatis输入映射和输出映射</h4>
+      </a>
+    </div>
   
 </nav>
 
-  
+
+    
+    
+        <aside class="post-widget">
+            <nav class="post-toc-wrap" id="post-toc">
+                <strong>目录</strong>
+                <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#1-概念"><span class="post-toc-number">1.</span> <span class="post-toc-text">1.概念</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2-流程"><span class="post-toc-number">2.</span> <span class="post-toc-text">2.流程</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#2-1得到Connection对象"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">2.1得到Connection对象</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#时刻牢记Jdbc中的四大参数"><span class="post-toc-number">2.1.1.</span> <span class="post-toc-text">时刻牢记Jdbc中的四大参数:</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Demo"><span class="post-toc-number">2.1.2.</span> <span class="post-toc-text">Demo</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#代码分析"><span class="post-toc-number">2.1.3.</span> <span class="post-toc-text">代码分析:</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#3-Jdbc对数据库进行增、删、改、查"><span class="post-toc-number">3.</span> <span class="post-toc-text">3.Jdbc对数据库进行增、删、改、查</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#3-1创建mysql数据库"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">3.1创建mysql数据库</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#4-创建项目"><span class="post-toc-number">4.</span> <span class="post-toc-text">4.创建项目</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-1-创建一个java项目"><span class="post-toc-number">4.0.1.</span> <span class="post-toc-text">4.1 创建一个java项目</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-2-导入jar包，需要mysql的数据库驱动"><span class="post-toc-number">4.0.2.</span> <span class="post-toc-text">4.2 导入jar包，需要mysql的数据库驱动</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-3-jdbc编程步骤："><span class="post-toc-number">4.0.3.</span> <span class="post-toc-text">4.3    jdbc编程步骤：</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-4-jdbc程序"><span class="post-toc-number">4.0.4.</span> <span class="post-toc-text">4.4 jdbc程序</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-5jdbc问题总结"><span class="post-toc-number">4.0.5.</span> <span class="post-toc-text">4.5jdbc问题总结</span></a></li></ol></li></ol></li></ol>
+            </nav>
+            <div class="toc-bar"><div>
+        </aside>
+    
 </article>
 
+    <div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        我们一起来让这个世界有趣一点
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/reward-wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/reward-wechat.jpg" data-alipay="/img/reward-alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
 
-</section>
-      
-      <aside id="sidebar">
-  
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recents</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/05/28/PracticeSpringMvc/">Spring MVC快速入门(一)</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/28/PracticeMysql/">MySQL语法查漏补缺</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/28/PracticeJDBC/">Java学习笔记之JDBC</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/28/PracticeMyBatis/">初识MyBatis</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/28/MyBatisMappered/">MyBatis输入映射和输出映射</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+</div>
 
-  
+        <footer class="footer">
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Mvc/">Spring Mvc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdbc/">jdbc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/">mybatis</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li></ul>
-    </div>
-  </div>
-
-  
+    <div class="top">
+        
+        
+            <p>
+    <span>Links：</span>
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li></ul>
-    </div>
-  </div>
+    <span class="blogroll-item">
+        <a href="https://www.liuyu.pw" target="_blank">HOME</a>
+    </span>
+    
+</p>
 
-  
-</aside>
-      
+        
     </div>
-    <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2018 Liuyu<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-      .
-      Theme by <a href="https://github.com/sun11/hexo-theme-paperbox" target="_blank">Paperbox</a>
+    
+    <div class="bottom">
+        <p>
+            <span>
+                Liuyu &copy; 2017 - 2018
+            </span>
+        		
+           	
+            
+            
+            <span>
+	            Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/codefine/hexo-theme-mellow" target="_blank">mellow</a>
+            </span>
+            
+            
+            
+        </p>
     </div>
-  </div>
 </footer>
-  </div>
-  <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-    <a href="/about" class="mobile-nav-link">About</a>
-  
-  <a href="#search" class="mobile-nav-link st-search-show-outputs">Search</a>
-</nav>
-  
 
-<!-- totop start -->
-<div id="totop">
-	<a title="To Top"></a>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.liuyu.in/2018/05/28/PracticeJDBC/&title=《Java学习笔记之JDBC》 — Lyouth's Blog&pic=https://www.liuyu.in/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.liuyu.in/2018/05/28/PracticeJDBC/&title=《Java学习笔记之JDBC》 — Lyouth's Blog&source=1.概念Jdbc(java database connectivity):Java数据库连接，就是用Java语言来操作数据库。原来我们操作数据库是在控制台..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJklEQVR42u3aQW7DMAwEwP7/0+m1QBF3l3IKWBqdAtuxND4QpMSvr3i8fozfV9bvvpvl5oGBgfFYxutyJBNfL+L6+eT39dowMDDOYbyLYPcuJY+W+dowMDAw3j2Th8U8BCd3MTAwMGaTJe/JS1YMDAyMlSJ2tg2XfKB22w4DA+M0Rr7r/v+/P3K+gYGB8SjGqxztf2fLqleFgYGxNSOfZoWXJ5Sz9WBgYOzNWG9xWFno9SdIZonyVgwMjIczZoEyv56E7OQjFkcRGBgY2zHaIJs3eLWxceVYFAMDY29Gm7S1ATHHt8EdAwPjHMbKxlnbSJE3Z7StGxgYGHsz2uCYH2Qmm3qz8BodIWBgYGzEuOu4Md/on6WJUS2OgYFxDCPZ/LqrSaLdaPujCsfAwNiUMWu5yAvXYQk6OzrFwMDYmpGXsrOSNQ/isxCMgYGxN6NN5vKUcRZ820Sz6O/AwMDYgpGncXnT2Cwo1+kgBgbG1ow2RVtpv2jffMMZLAYGxkaMthkib+26K+Au7RpiYGBsxGg39/OJ23QzuY6BgYHRtnm1pWaRscYkDAyMXRmvciSlaXucsFL0YmBgnMBoG7PaY8j1N6ykmxgYGDsxVkrWPK2cFa7JR8HAwDiH0TZptXeTsrYN/UWkx8DAOIyRl5dtcTubBQMDAyMvTZNgOtsmi1rTMDAwDmAkRexs0StNYB+pxTEwMB7ImIW8leI2Of5cQWJgYGzE+AbczdsZ0p3GIQAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
-<!-- totop end -->
-
-<!-- swiftype search start -->
-
-<!-- swiftype search end -->
 
 
+    
+    <!-- main-js -->
+<script type="text/javascript" src="//cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript" src="/js/plugins/fastclick.js?v=1.2.8"></script>
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/lrsjng.jquery-qrcode/0.12.0/jquery.qrcode.min.js"></script>
+<script type="text/javascript" src="/js/method.js?v=1.2.8"></script>
+<script type="text/javascript" src="/js/blog.js?v=1.2.8"></script>
+
+<!-- third-party -->
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
 
 
-<script src="/js/script.js"></script>
 
-</div>
+<script type="text/javascript" src="/js/plugins/local_search.js?v=1.2.8"></script>
+<script type="text/javascript">
+	var search_path = "search.xml";
+	if (search_path.length === 0) {
+		search_path = "search.xml";
+	}
+	var path = "/" + search_path;
+	searchFunc(path, "local-search-input", "local-search-result");
+</script>
+
+
+
+    
+    
+
+
+
+
+
+    <!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+            processEscapes: true,
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+    <script>
+    (function() {
+        var OriginTitile = document.title, titleTime;
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                document.title = '死鬼去哪里了！';
+                clearTimeout(titleTime);
+            } else {
+                document.title = '(つェ⊂)咦!又好了!';
+                titleTime = setTimeout(function() {
+                    document.title = OriginTitile;
+                },2000);
+            }
+        });
+    })();
+</script>
+
+
+    
 </body>
 </html>

@@ -1,126 +1,220 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  
-  <title>MyBatis输入映射和输出映射 | Lyouth&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="在MyBatis中，我们通过parameterType完成输入映射(指将值映射到sql语句的占位符中，值的类型与dao层响应方法的参数类型一致)，通过resultType完成输出映射(从数据库中输出，通过dao层的方法查询到的数据输出到pojo对象中)。 注意输入与输出都是相对于数据库的。接下来我们先谈谈输入映射。工程目录结构如下:">
-<meta name="keywords" content="mybatis">
-<meta property="og:type" content="article">
-<meta property="og:title" content="MyBatis输入映射和输出映射">
-<meta property="og:url" content="https://www.liuyu.in/2018/05/28/MyBatisMappered/index.html">
-<meta property="og:site_name" content="Lyouth&#39;s Blog">
-<meta property="og:description" content="在MyBatis中，我们通过parameterType完成输入映射(指将值映射到sql语句的占位符中，值的类型与dao层响应方法的参数类型一致)，通过resultType完成输出映射(从数据库中输出，通过dao层的方法查询到的数据输出到pojo对象中)。 注意输入与输出都是相对于数据库的。接下来我们先谈谈输入映射。工程目录结构如下:">
-<meta property="og:locale" content="default">
-<meta property="og:image" content="http://owtr5yq3h.bkt.clouddn.com/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png">
-<meta property="og:updated_time" content="2018-04-26T03:46:19.583Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MyBatis输入映射和输出映射">
-<meta name="twitter:description" content="在MyBatis中，我们通过parameterType完成输入映射(指将值映射到sql语句的占位符中，值的类型与dao层响应方法的参数类型一致)，通过resultType完成输出映射(从数据库中输出，通过dao层的方法查询到的数据输出到pojo对象中)。 注意输入与输出都是相对于数据库的。接下来我们先谈谈输入映射。工程目录结构如下:">
-<meta name="twitter:image" content="http://owtr5yq3h.bkt.clouddn.com/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png">
-  
-    <link rel="alternative" href="/atom.xml" title="Lyouth&#39;s Blog" type="application/atom+xml">
-  
-  
-  <link rel="stylesheet" href="/css/style.css">
-  
-    <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
-  
-  
-<script type="text/javascript">
-var isWX = /micromessenger/i.test(navigator.userAgent);
-if (isWX) {
-  document.write('<br/><br/><h1 style="text-align: center;font-size:32px;" >╮(╯_╰)╭</h1><br/><br/><h4 style="text-align: center;" >请在浏览器中打开。</h4><br/><h4 style="text-align: center;" >Please open in the browser.</h4>');
-  window.stop ? window.stop() : document.execCommand("Stop");
-}
-</script>
-
-
+    <meta charset="utf-8">
+    
+    
+    <title>MyBatis输入映射和输出映射 | Lyouth&#39;s Blog | 分享资源、教程</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="mybatis">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.2.8">
+    
+    <script type="text/javascript">
+        // Data Center
+        var DC = {
+            reward:	true,
+            lv: JSON.parse('{"enable":false,"app_id":null,"app_key":null,"icon":true}'),
+            v: JSON.parse('{"enable":false,"appid":null,"appkey":null,"notify":true,"verify":true,"placeholder":"give me some sugers plz...","avatar":"wavatar"}'),
+            g: JSON.parse('{"enable":false,"lazy":true,"owner":"codefine","repo":"gitment","oauth":{"client_id":null,"client_secret":null},"perPage":10}')
+        };
+    </script>
+    <script type="text/javascript">
+        window.lazyScripts=[];
+    </script>
 </head>
 
+
 <body>
-<div id="container">
-  <div id="wrap">
-    <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <nav id="upper-nav" class="inner">
-      <a id="main-nav-toggle" class="nav-icon"></a>
-      <div class="sub-nav">
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      
+      <img src="/img/brand.jpg" class="brand-bg">
+      
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Liuyu</h5>
+          <a href="mailto:i@liuyu.in" title="i@liuyu.in" class="mail">
+            
+              <span>i</span>
+            
+              <span>@</span>
+            
+              <span>l</span>
+            
+              <span>i</span>
+            
+              <span>u</span>
+            
+              <span>y</span>
+            
+              <span>u</span>
+            
+              <span>.</span>
+            
+              <span>i</span>
+            
+              <span>n</span>
+            
+          </a>
+        </hgroup>
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        
-          <a id="nav-github" class="nav-icon" href="https://github.com/liuyu1994"></a>
+        <ul class="menu-link">
+          
+              <li>
+                <a href="https://github.com/lyouths" target="_blank">
+                  <i class="icon icon-lg icon-github"></i>
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://weibo.com/puzzors" target="_blank">
+                  <i class="icon icon-lg icon-weibo"></i>
+                </a>
+              </li>
+            
+        </ul>
         
       </div>
-    </nav>
-    <div id="header-title">
-      
-        <h1 id="blog-title-wrap">
-          <a href="/" id="blog-title">Lyouth&#39;s Blog</a>
-        </h1>
-      
     </div>
-    <div id="contenedor">
-      <ul class="cube">
-        <li class="cara">MyLogo</li>
-        <li class="cara"></li>
-        <li class="cara"></li>
-        <li class="cara"></li>
-        <li class="cara"></li>
-        <li class="cara"></li>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                HOME
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                CATEGORIES
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                TAGS
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                ARCHIVES
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-user"></i>
+                ABOUT
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/custom"  >
+                <i class="icon icon-lg icon-plus-square"></i>
+                CUSTOM
+              </a>
+            </li>
+        
       </ul>
     </div>
-    <nav id="main-nav">
-      
-        <a class="main-nav-link" href="/">Home</a>
-      
-        <a class="main-nav-link" href="/archives">Archives</a>
-      
-        <a class="main-nav-link" href="/about">About</a>
-      
-      <a class="main-nav-link st-search-show-outputs">Search</a>
-    </nav>
   </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row clearfix">
+        <a href="javascript:;" class="header-icon pull-left waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">
+            <span>MyBatis输入映射和输出映射</span>
+            
+        </div>
+        
+        <a href="javascript:;" id="site_search_btn" class="header-icon pull-right waves-effect waves-circle waves-light">
+            <i class="icon icon-lg icon-search"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+    <img src="/img/banner.jpg" class="header-bg">
+    <div class="container fade-scale">
+        <h1 class="title">MyBatis输入映射和输出映射</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-05-28T12:35:50.595Z" itemprop="datePublished" class="page-time">
+  2018-05-28
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/mybatis/">mybatis</a></li></ul>
+
+            
+        </h5>
+        
+    </div>
+    
+
 </header>
 
-    <div class="outer">
-      <section id="main"><article id="post-MyBatisMappered" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <h3 href="/2018/05/28/MyBatisMappered/" class="article-date">
-  <time datetime="2018-05-28T12:35:50.595Z" itemprop="datePublished">2018-05-28</time>
-</h3>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/mybatis/">mybatis</a>
-  </div>
+<div id="site_search">
+    <div class="search-title clearfix">
+        <span class="pull-left">
+          <i class="icon icon-lg icon-search"></i>
+        </span>
+        <input type="text" id="local-search-input" name="q" results="0" placeholder="search my blog..." class="form-control pull-left"/>
+        <a href="javascript:;" class="close pull-right waves-effect waves-circle waves-light">
+          <i class="icon icon-lg icon-close"></i>
+        </a>
+    </div>
+    <div id="local-search-result"></div>
+</div>
 
-  </div>
-  <div class="article-inner">
-  <div class="curve-down">
-  <div class="fill-content">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      MyBatis输入映射和输出映射
-    </h1>
-  
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-        <p>在MyBatis中，我们通过parameterType完成输入映射(指将值映射到sql语句的占位符中，值的类型与dao层响应方法的参数类型一致)，通过resultType完成输出映射(从数据库中输出，通过dao层的方法查询到的数据输出到pojo对象中)。 注意输入与输出都是相对于数据库的。接下来我们先谈谈输入映射。工程目录结构如下:<br><a id="more"></a><br><img src="http://owtr5yq3h.bkt.clouddn.com/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png" alt="目录结构"></p>
+<div class="container body-wrap">
+    <article id="post-MyBatisMappered"
+  class="post-article article-type-post" itemprop="blogPost">
+    <div class="post-card">
+        <h1 class="post-card-title">MyBatis输入映射和输出映射</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-05-28 20:35:50" datetime="2018-05-28T12:35:50.595Z"  itemprop="datePublished">2018-05-28</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/mybatis/">mybatis</a></li></ul>
+
+
+
+            
+
+            
+
+
+            
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            <p>在MyBatis中，我们通过parameterType完成输入映射(指将值映射到sql语句的占位符中，值的类型与dao层响应方法的参数类型一致)，通过resultType完成输出映射(从数据库中输出，通过dao层的方法查询到的数据输出到pojo对象中)。 注意输入与输出都是相对于数据库的。接下来我们先谈谈输入映射。工程目录结构如下:<br><a id="more"></a><br><figure class="image-box">
+                <img src="http://owtr5yq3h.bkt.clouddn.com/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png" alt="目录结构" title="" class="">
+                <p>目录结构</p>
+            </figure></p>
 <h3 id="1-输入映射parameterType"><a href="#1-输入映射parameterType" class="headerlink" title="1.输入映射parameterType"></a>1.输入映射parameterType</h3><p>通过parameterType传入简单类型或对象，我们之前讲过了，接下来我们要讲的是parameterType传递pojo包装对象。可以定义pojo包装类型扩展mapper接口输入参数的内容。pojo对象Mybatis使用ognl表达式解析对象字段的值，#{}或者${}括号中的值为pojo属性名称。</p>
 <p>我们在pojo包下创建User类<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id;</span><br><span class="line">	<span class="keyword">private</span> String username;<span class="comment">// 用户姓名</span></span><br><span class="line">	<span class="keyword">private</span> String sex;<span class="comment">// 性别</span></span><br><span class="line">	<span class="keyword">private</span> Date birthday;<span class="comment">// 生日</span></span><br><span class="line">	<span class="keyword">private</span> String address;<span class="comment">// 地址</span></span><br><span class="line">	<span class="comment">//此处省略Get/Set/ToString方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>创建QueryVo类，用于对User属性进行拓展<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QueryVo</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> User user;</span><br><span class="line">	<span class="comment">//此处省略Get/Set/ToString方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
@@ -141,148 +235,295 @@ if (isWX) {
 <p>测试代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindUserListResultMap</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">	SqlSession openSession=factory.openSession();</span><br><span class="line">	<span class="comment">//通过getMapper方法来实例化接口</span></span><br><span class="line">	UserMapper mapper=openSession.getMapper(UserMapper.class);</span><br><span class="line">	QueryVo vo=<span class="keyword">new</span> QueryVo();</span><br><span class="line">	User user=<span class="keyword">new</span> User();</span><br><span class="line">	user.setUsername(<span class="string">"张"</span>);</span><br><span class="line">	vo.setUser(user);</span><br><span class="line">	List&lt;User&gt; list=mapper.userListResultMap(vo);</span><br><span class="line">	System.out.println(list);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>运行测试类发现，即使我们查询的列名与User对象的属性不一样，但是我们的确映射成功了。(ps:这里都是一致的)</p>
 
-      
-    </div>
-    <footer class="article-footer">
-      <div class="article-footer-content">
+        </div>
         
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mybatis/">mybatis</a></li></ul>
+<blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2018-04-26T03:46:19.583Z" itemprop="dateUpdated">2018-04-26 11:46:19</time>
+</span><br>
 
-        <a data-url="https://www.liuyu.in/2018/05/28/MyBatisMappered/" data-id="cjhq8wdnc000720uknlxc0yat" class="article-share-link">Share</a>
+
         
-      </div>
+        转载注明出处，原文地址：<a href="/2018/05/28/MyBatisMappered/" target="_blank" rel="external">https://www.liuyu.in/2018/05/28/MyBatisMappered/</a>
+        
+    </div>
+    <footer>
+        <a href="https://www.liuyu.in">
+            <img src="/img/avatar.jpg" alt="Liuyu">
+            Liuyu
+        </a>
     </footer>
-  </div>
-  </div>
-  </div>
-  
+</blockquote>
+
+        
+            <div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+            
+        
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mybatis/">mybatis</a></li></ul>
+
+            <div class="page-share-wrap">
     
-<nav id="article-nav">
-  
-    <a href="/2018/05/28/PracticeMyBatis/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          初识MyBatis
-        
-      </div>
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.liuyu.in/2018/05/28/MyBatisMappered/&title=《MyBatis输入映射和输出映射》 — Lyouth's Blog&pic=https://www.liuyu.in/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.liuyu.in/2018/05/28/MyBatisMappered/&title=《MyBatis输入映射和输出映射》 — Lyouth's Blog&source=在MyBatis中，我们通过parameterType完成输入映射(指将值映射到sql语句的占位符中，值的类型与dao层响应方法的参数类型一致)，通过re..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
     </a>
+</div>
+
+        </div>
+        
+            
+
+
+        
+    </div>
+    
+<nav class="post-nav flex-row flex-justify-between">
   
+    <div class="prev">
+      <a href="/2018/05/28/PracticeJDBC/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Java学习笔记之JDBC</h4>
+      </a>
+    </div>
   
-    <a href="/2018/05/28/MyBatisDao/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">MyBatis之Mapper动态代理开发</div>
-    </a>
+
+  
+    <div class="next">
+      <a href="/2018/05/28/MyBatisDao/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">MyBatis之Mapper动态代理开发</h4>
+      </a>
+    </div>
   
 </nav>
 
-  
+
+    
+    
+        <aside class="post-widget">
+            <nav class="post-toc-wrap" id="post-toc">
+                <strong>目录</strong>
+                <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-输入映射parameterType"><span class="post-toc-number">1.</span> <span class="post-toc-text">1.输入映射parameterType</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-输出映射-resultType和resultMap"><span class="post-toc-number">2.</span> <span class="post-toc-text">2.输出映射(resultType和resultMap)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#2-1resultType-输出简单类型"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">2.1resultType(输出简单类型)</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#2-2resultMap"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">2.2resultMap</span></a></li></ol></li></ol>
+            </nav>
+            <div class="toc-bar"><div>
+        </aside>
+    
 </article>
 
+    <div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        我们一起来让这个世界有趣一点
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/reward-wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/reward-wechat.jpg" data-alipay="/img/reward-alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
 
-</section>
-      
-      <aside id="sidebar">
-  
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recents</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/05/28/PracticeSpringMvc/">Spring MVC快速入门(一)</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/28/PracticeMysql/">MySQL语法查漏补缺</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/28/PracticeJDBC/">Java学习笔记之JDBC</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/28/PracticeMyBatis/">初识MyBatis</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/28/MyBatisMappered/">MyBatis输入映射和输出映射</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+</div>
 
-  
+        <footer class="footer">
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Mvc/">Spring Mvc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdbc/">jdbc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/">mybatis</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li></ul>
-    </div>
-  </div>
-
-  
+    <div class="top">
+        
+        
+            <p>
+    <span>Links：</span>
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li></ul>
-    </div>
-  </div>
+    <span class="blogroll-item">
+        <a href="https://www.liuyu.pw" target="_blank">HOME</a>
+    </span>
+    
+</p>
 
-  
-</aside>
-      
+        
     </div>
-    <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2018 Liuyu<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-      .
-      Theme by <a href="https://github.com/sun11/hexo-theme-paperbox" target="_blank">Paperbox</a>
+    
+    <div class="bottom">
+        <p>
+            <span>
+                Liuyu &copy; 2017 - 2018
+            </span>
+        		
+           	
+            
+            
+            <span>
+	            Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/codefine/hexo-theme-mellow" target="_blank">mellow</a>
+            </span>
+            
+            
+            
+        </p>
     </div>
-  </div>
 </footer>
-  </div>
-  <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-    <a href="/about" class="mobile-nav-link">About</a>
-  
-  <a href="#search" class="mobile-nav-link st-search-show-outputs">Search</a>
-</nav>
-  
 
-<!-- totop start -->
-<div id="totop">
-	<a title="To Top"></a>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.liuyu.in/2018/05/28/MyBatisMappered/&title=《MyBatis输入映射和输出映射》 — Lyouth's Blog&pic=https://www.liuyu.in/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.liuyu.in/2018/05/28/MyBatisMappered/&title=《MyBatis输入映射和输出映射》 — Lyouth's Blog&source=在MyBatis中，我们通过parameterType完成输入映射(指将值映射到sql语句的占位符中，值的类型与dao层响应方法的参数类型一致)，通过re..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLElEQVR42u3aQW7DMAwF0dz/0u66cCzMJ9UCpkaroFFsPS1YitTng8d1G/dvn+bf56w/35+2bciQIeO1jGs5yLLSt6y3Zj3nkSpDhowDGE8vJovuBE2yfes3ypAhQ0ZtDoGlCaUMGTJkpAyePpJUT4YMGTIIg6do6+SPJ5EpbNtZXIYMGS9k8KPm/3/+k/6GDBkyXsW4wrE3Neys5NdzZMiQMZrBA1xaMuOJYC3gypAh4zRGLdfizYC0iEY2a1vKKEOGjJcweAGLF8XSqxjpdbEvf5EhQ8YBjDSZI9/WtqnYZpAhQ8ZQBv8ZD39pca1/bJYhQ8ZsRpr21c7HtcSxeM1ChgwZxzB4SE0Pov1Aj/6HyJAhYxyjFuD4Kbl2fC12YmXIkDGa0Vkib1KmwT3YGhkyZBzAqF3h2gWrNQxQJ1aGDBkjGLVGZprw9ducca9DhgwZIxi1axad42t6BTaOxzJkyBjK2HXlonaBPt2s+PgqQ4aMlzP4Qvki1r/tz0cYGTJkjGN0jqP9gn7tutiXp8mQIeMARpqKcTwp1XXSShkyZJzG4IvmRf9+CQ81J2TIkDGUcYUjbTf2gywq7cmQIWM0g4+0cFY7APOmJg/xMmTImMHgQZZftujsHKfKkCHjNAYPfHubBx1kXBeUIUPGMYw01UtblevAjXZRhgwZxzN4czEttPEVbksNZciQ8SrGrqulnSJ+WsKTIUPGOYxayOv0H/a2B2TIkDGa8QONgX5M7d3rpgAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
-<!-- totop end -->
-
-<!-- swiftype search start -->
-
-<!-- swiftype search end -->
 
 
+    
+    <!-- main-js -->
+<script type="text/javascript" src="//cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript" src="/js/plugins/fastclick.js?v=1.2.8"></script>
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/lrsjng.jquery-qrcode/0.12.0/jquery.qrcode.min.js"></script>
+<script type="text/javascript" src="/js/method.js?v=1.2.8"></script>
+<script type="text/javascript" src="/js/blog.js?v=1.2.8"></script>
+
+<!-- third-party -->
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
 
 
-<script src="/js/script.js"></script>
 
-</div>
+<script type="text/javascript" src="/js/plugins/local_search.js?v=1.2.8"></script>
+<script type="text/javascript">
+	var search_path = "search.xml";
+	if (search_path.length === 0) {
+		search_path = "search.xml";
+	}
+	var path = "/" + search_path;
+	searchFunc(path, "local-search-input", "local-search-result");
+</script>
+
+
+
+    
+    
+
+
+
+
+
+    <!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+            processEscapes: true,
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+    <script>
+    (function() {
+        var OriginTitile = document.title, titleTime;
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                document.title = '死鬼去哪里了！';
+                clearTimeout(titleTime);
+            } else {
+                document.title = '(つェ⊂)咦!又好了!';
+                titleTime = setTimeout(function() {
+                    document.title = OriginTitile;
+                },2000);
+            }
+        });
+    })();
+</script>
+
+
+    
 </body>
 </html>

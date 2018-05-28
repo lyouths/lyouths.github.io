@@ -1,133 +1,227 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  
-  <title>MyBatis之Mapper动态代理开发 | Lyouth&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1.SqlSession的使用范围SqlSession中封装了对数据库的操作，如：查询、插入、更新、删除等。通过SqlSessionFactory创建SqlSession，而SqlSessionFactory是通过SqlSessionFactoryBuilder进行创建。">
-<meta name="keywords" content="mybatis">
-<meta property="og:type" content="article">
-<meta property="og:title" content="MyBatis之Mapper动态代理开发">
-<meta property="og:url" content="https://www.liuyu.in/2018/05/28/MyBatisDao/index.html">
-<meta property="og:site_name" content="Lyouth&#39;s Blog">
-<meta property="og:description" content="1.SqlSession的使用范围SqlSession中封装了对数据库的操作，如：查询、插入、更新、删除等。通过SqlSessionFactory创建SqlSession，而SqlSessionFactory是通过SqlSessionFactoryBuilder进行创建。">
-<meta property="og:locale" content="default">
-<meta property="og:image" content="http://owtr5yq3h.bkt.clouddn.com/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png">
-<meta property="og:updated_time" content="2018-04-25T08:11:39.985Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MyBatis之Mapper动态代理开发">
-<meta name="twitter:description" content="1.SqlSession的使用范围SqlSession中封装了对数据库的操作，如：查询、插入、更新、删除等。通过SqlSessionFactory创建SqlSession，而SqlSessionFactory是通过SqlSessionFactoryBuilder进行创建。">
-<meta name="twitter:image" content="http://owtr5yq3h.bkt.clouddn.com/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png">
-  
-    <link rel="alternative" href="/atom.xml" title="Lyouth&#39;s Blog" type="application/atom+xml">
-  
-  
-  <link rel="stylesheet" href="/css/style.css">
-  
-    <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
-  
-  
-<script type="text/javascript">
-var isWX = /micromessenger/i.test(navigator.userAgent);
-if (isWX) {
-  document.write('<br/><br/><h1 style="text-align: center;font-size:32px;" >╮(╯_╰)╭</h1><br/><br/><h4 style="text-align: center;" >请在浏览器中打开。</h4><br/><h4 style="text-align: center;" >Please open in the browser.</h4>');
-  window.stop ? window.stop() : document.execCommand("Stop");
-}
-</script>
-
-
+    <meta charset="utf-8">
+    
+    
+    <title>MyBatis之Mapper动态代理开发 | Lyouth&#39;s Blog | 分享资源、教程</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="mybatis">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.2.8">
+    
+    <script type="text/javascript">
+        // Data Center
+        var DC = {
+            reward:	true,
+            lv: JSON.parse('{"enable":false,"app_id":null,"app_key":null,"icon":true}'),
+            v: JSON.parse('{"enable":false,"appid":null,"appkey":null,"notify":true,"verify":true,"placeholder":"give me some sugers plz...","avatar":"wavatar"}'),
+            g: JSON.parse('{"enable":false,"lazy":true,"owner":"codefine","repo":"gitment","oauth":{"client_id":null,"client_secret":null},"perPage":10}')
+        };
+    </script>
+    <script type="text/javascript">
+        window.lazyScripts=[];
+    </script>
 </head>
 
+
 <body>
-<div id="container">
-  <div id="wrap">
-    <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <nav id="upper-nav" class="inner">
-      <a id="main-nav-toggle" class="nav-icon"></a>
-      <div class="sub-nav">
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      
+      <img src="/img/brand.jpg" class="brand-bg">
+      
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Liuyu</h5>
+          <a href="mailto:i@liuyu.in" title="i@liuyu.in" class="mail">
+            
+              <span>i</span>
+            
+              <span>@</span>
+            
+              <span>l</span>
+            
+              <span>i</span>
+            
+              <span>u</span>
+            
+              <span>y</span>
+            
+              <span>u</span>
+            
+              <span>.</span>
+            
+              <span>i</span>
+            
+              <span>n</span>
+            
+          </a>
+        </hgroup>
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        
-          <a id="nav-github" class="nav-icon" href="https://github.com/liuyu1994"></a>
+        <ul class="menu-link">
+          
+              <li>
+                <a href="https://github.com/lyouths" target="_blank">
+                  <i class="icon icon-lg icon-github"></i>
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://weibo.com/puzzors" target="_blank">
+                  <i class="icon icon-lg icon-weibo"></i>
+                </a>
+              </li>
+            
+        </ul>
         
       </div>
-    </nav>
-    <div id="header-title">
-      
-        <h1 id="blog-title-wrap">
-          <a href="/" id="blog-title">Lyouth&#39;s Blog</a>
-        </h1>
-      
     </div>
-    <div id="contenedor">
-      <ul class="cube">
-        <li class="cara">MyLogo</li>
-        <li class="cara"></li>
-        <li class="cara"></li>
-        <li class="cara"></li>
-        <li class="cara"></li>
-        <li class="cara"></li>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                HOME
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                CATEGORIES
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                TAGS
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                ARCHIVES
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-user"></i>
+                ABOUT
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/custom"  >
+                <i class="icon icon-lg icon-plus-square"></i>
+                CUSTOM
+              </a>
+            </li>
+        
       </ul>
     </div>
-    <nav id="main-nav">
-      
-        <a class="main-nav-link" href="/">Home</a>
-      
-        <a class="main-nav-link" href="/archives">Archives</a>
-      
-        <a class="main-nav-link" href="/about">About</a>
-      
-      <a class="main-nav-link st-search-show-outputs">Search</a>
-    </nav>
   </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row clearfix">
+        <a href="javascript:;" class="header-icon pull-left waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">
+            <span>MyBatis之Mapper动态代理开发</span>
+            
+        </div>
+        
+        <a href="javascript:;" id="site_search_btn" class="header-icon pull-right waves-effect waves-circle waves-light">
+            <i class="icon icon-lg icon-search"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+    <img src="/img/banner.jpg" class="header-bg">
+    <div class="container fade-scale">
+        <h1 class="title">MyBatis之Mapper动态代理开发</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-05-28T12:35:50.582Z" itemprop="datePublished" class="page-time">
+  2018-05-28
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/mybatis/">mybatis</a></li></ul>
+
+            
+        </h5>
+        
+    </div>
+    
+
 </header>
 
-    <div class="outer">
-      <section id="main"><article id="post-MyBatisDao" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <h3 href="/2018/05/28/MyBatisDao/" class="article-date">
-  <time datetime="2018-05-28T12:35:50.582Z" itemprop="datePublished">2018-05-28</time>
-</h3>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/mybatis/">mybatis</a>
-  </div>
+<div id="site_search">
+    <div class="search-title clearfix">
+        <span class="pull-left">
+          <i class="icon icon-lg icon-search"></i>
+        </span>
+        <input type="text" id="local-search-input" name="q" results="0" placeholder="search my blog..." class="form-control pull-left"/>
+        <a href="javascript:;" class="close pull-right waves-effect waves-circle waves-light">
+          <i class="icon icon-lg icon-close"></i>
+        </a>
+    </div>
+    <div id="local-search-result"></div>
+</div>
 
-  </div>
-  <div class="article-inner">
-  <div class="curve-down">
-  <div class="fill-content">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      MyBatis之Mapper动态代理开发
-    </h1>
-  
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-        <h2 id="1-SqlSession的使用范围"><a href="#1-SqlSession的使用范围" class="headerlink" title="1.SqlSession的使用范围"></a>1.SqlSession的使用范围</h2><p>SqlSession中封装了对数据库的操作，如：查询、插入、更新、删除等。<br>通过SqlSessionFactory创建SqlSession，而SqlSessionFactory是通过SqlSessionFactoryBuilder进行创建。<br><a id="more"></a><br><strong>1.SqlSessionFactoryBuilder</strong><br>SqlSessionFactoryBuilder用于创建SqlSessionFacoty，SqlSessionFacoty一旦创建完成就不需要SqlSessionFactoryBuilder了，因为SqlSession是通过SqlSessionFactory生产，所以可以将SqlSessionFactoryBuilder当成一个工具类使用，最佳使用范围是方法范围即方法体内局部变量。<br><strong>2.SqlSessionFactory</strong><br>SqlSessionFactory是一个接口，接口中定义了openSession的不同重载方法，SqlSessionFactory的最佳使用范围是整个应用运行期间，一旦创建后可以重复使用，通常以单例模式管理SqlSessionFactory。<br><strong>3.SqlSession</strong><br>SqlSession是一个面向用户的接口， sqlSession中定义了数据库操作方法。<br>    &nbsp;&nbsp;每个线程都应该有它自己的SqlSession实例。SqlSession的实例不能共享使用，它也是线程不安全的。因此最佳的范围是请求或方法范围。绝对不能将SqlSession实例的引用放在一个类的静态字段或实例字段中。<br>&nbsp;&nbsp;打开一个SqlSession；使用完毕就要关闭它。通常把这个关闭操作放到 finally 块中以确保每次都能执行关闭。如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SqlSession session = sqlSessionFactory.openSession();</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line"> 		 <span class="comment">// do work</span></span><br><span class="line">	&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">  		session.close();</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
+<div class="container body-wrap">
+    <article id="post-MyBatisDao"
+  class="post-article article-type-post" itemprop="blogPost">
+    <div class="post-card">
+        <h1 class="post-card-title">MyBatis之Mapper动态代理开发</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-05-28 20:35:50" datetime="2018-05-28T12:35:50.582Z"  itemprop="datePublished">2018-05-28</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/mybatis/">mybatis</a></li></ul>
+
+
+
+            
+
+            
+
+
+            
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            <h2 id="1-SqlSession的使用范围"><a href="#1-SqlSession的使用范围" class="headerlink" title="1.SqlSession的使用范围"></a>1.SqlSession的使用范围</h2><p>SqlSession中封装了对数据库的操作，如：查询、插入、更新、删除等。<br>通过SqlSessionFactory创建SqlSession，而SqlSessionFactory是通过SqlSessionFactoryBuilder进行创建。<br><a id="more"></a><br><strong>1.SqlSessionFactoryBuilder</strong><br>SqlSessionFactoryBuilder用于创建SqlSessionFacoty，SqlSessionFacoty一旦创建完成就不需要SqlSessionFactoryBuilder了，因为SqlSession是通过SqlSessionFactory生产，所以可以将SqlSessionFactoryBuilder当成一个工具类使用，最佳使用范围是方法范围即方法体内局部变量。<br><strong>2.SqlSessionFactory</strong><br>SqlSessionFactory是一个接口，接口中定义了openSession的不同重载方法，SqlSessionFactory的最佳使用范围是整个应用运行期间，一旦创建后可以重复使用，通常以单例模式管理SqlSessionFactory。<br><strong>3.SqlSession</strong><br>SqlSession是一个面向用户的接口， sqlSession中定义了数据库操作方法。<br>    &nbsp;&nbsp;每个线程都应该有它自己的SqlSession实例。SqlSession的实例不能共享使用，它也是线程不安全的。因此最佳的范围是请求或方法范围。绝对不能将SqlSession实例的引用放在一个类的静态字段或实例字段中。<br>&nbsp;&nbsp;打开一个SqlSession；使用完毕就要关闭它。通常把这个关闭操作放到 finally 块中以确保每次都能执行关闭。如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SqlSession session = sqlSessionFactory.openSession();</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line"> 		 <span class="comment">// do work</span></span><br><span class="line">	&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">  		session.close();</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
 <h2 id="2-MyBatis开发DAO的方式"><a href="#2-MyBatis开发DAO的方式" class="headerlink" title="2.MyBatis开发DAO的方式"></a>2.MyBatis开发DAO的方式</h2><p>使用Mybatis开发Dao，通常有两个方法，即原始Dao开发方法和Mapper接口开发方法。<br>我们先来看看MyBatis原始开发dao的开发方式，发现原始开发的问题，然后再来看看MyBatis使用mapper动态代理开发dao的方式(也是MyBatis目前使用的开发dao的方式)。</p>
 <h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><ul>
 <li>将下边的功能实现Dao：</li>
 <li>根据用户id查询一个用户信息</li>
 <li>根据用户名称模糊查询用户信息列表</li>
 </ul>
-<p>目录结构如下：<br><img src="http://owtr5yq3h.bkt.clouddn.com/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png" alt="目录结构"></p>
+<p>目录结构如下：<br><figure class="image-box">
+                <img src="http://owtr5yq3h.bkt.clouddn.com/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png" alt="目录结构" title="" class="">
+                <p>目录结构</p>
+            </figure></p>
 <h3 id="2-1原始Dao开发方法需要程序员编写Dao接口和Dao实现类。"><a href="#2-1原始Dao开发方法需要程序员编写Dao接口和Dao实现类。" class="headerlink" title="2.1原始Dao开发方法需要程序员编写Dao接口和Dao实现类。"></a>2.1原始Dao开发方法需要程序员编写Dao接口和Dao实现类。</h3><p>首先编写映射文件<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</span><br><span class="line"><span class="meta">&lt;!DOCTYPE mapper</span></span><br><span class="line"><span class="meta">        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"</span></span><br><span class="line"><span class="meta">        "http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">"test"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--根据ID获取用户信息--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUserById"</span> <span class="attr">parameterType</span>=<span class="string">"int"</span> <span class="attr">resultType</span>=<span class="string">"cn.liuyu.pojo.User"</span>&gt;</span></span><br><span class="line">        select * from user where id=#&#123;id&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--模糊查询--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUserByUserName"</span> <span class="attr">parameterType</span>=<span class="string">"string"</span> <span class="attr">resultType</span>=<span class="string">"cn.liuyu.pojo.User"</span>&gt;</span></span><br><span class="line">        select * from user where username like '%$&#123;value&#125;%'</span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
 <p>编写Dao接口<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserDao</span> </span>&#123;</span><br><span class="line">    <span class="comment">//根据ID查询用户信息</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">findUserById</span><span class="params">(Integer id)</span></span>;</span><br><span class="line">    <span class="comment">//模糊查询</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;User&gt; <span class="title">findUserByUserName</span><span class="params">(String userName)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>编写Dao实现类<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserDaoImpl</span> <span class="keyword">implements</span> <span class="title">UserDao</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> SqlSessionFactory sqlSessionFactory;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//通过构造方法注入</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">UserDaoImpl</span><span class="params">(SqlSessionFactory sqlSessionFactory)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.sqlSessionFactory = sqlSessionFactory;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> User <span class="title">findUserById</span><span class="params">(Integer id)</span> </span>&#123;</span><br><span class="line">		<span class="comment">//sqlSesion是线程不安全的,所以它的最佳使用范围在方法体内</span></span><br><span class="line">		SqlSession openSession = sqlSessionFactory.openSession();</span><br><span class="line">		User user = openSession.selectOne(<span class="string">"test.findUserById"</span>, id);</span><br><span class="line">		<span class="keyword">return</span> user;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;User&gt; <span class="title">findUserByUserName</span><span class="params">(String userName)</span> </span>&#123;</span><br><span class="line">		SqlSession openSession = sqlSessionFactory.openSession();</span><br><span class="line">		List&lt;User&gt; list = openSession.selectList(<span class="string">"test.findUserByUserName"</span>, userName);</span><br><span class="line">		<span class="keyword">return</span> list;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
@@ -154,148 +248,295 @@ if (isWX) {
 <li>2.namespace<br>mybatis官方推荐使用mapper代理方法开发mapper接口，程序员不用编写mapper接口实现类，使用mapper代理方法时，输入参数可以使用pojo包装对象或map对象，保证dao的通用性。</li>
 </ul>
 
-      
-    </div>
-    <footer class="article-footer">
-      <div class="article-footer-content">
+        </div>
         
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mybatis/">mybatis</a></li></ul>
+<blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2018-04-25T08:11:39.985Z" itemprop="dateUpdated">2018-04-25 16:11:39</time>
+</span><br>
 
-        <a data-url="https://www.liuyu.in/2018/05/28/MyBatisDao/" data-id="cjhq8wdnc000620uktsapqttg" class="article-share-link">Share</a>
+
         
-      </div>
+        转载注明出处，原文地址：<a href="/2018/05/28/MyBatisDao/" target="_blank" rel="external">https://www.liuyu.in/2018/05/28/MyBatisDao/</a>
+        
+    </div>
+    <footer>
+        <a href="https://www.liuyu.in">
+            <img src="/img/avatar.jpg" alt="Liuyu">
+            Liuyu
+        </a>
     </footer>
-  </div>
-  </div>
-  </div>
-  
+</blockquote>
+
+        
+            <div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+            
+        
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mybatis/">mybatis</a></li></ul>
+
+            <div class="page-share-wrap">
     
-<nav id="article-nav">
-  
-    <a href="/2018/05/28/MyBatisMappered/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          MyBatis输入映射和输出映射
-        
-      </div>
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.liuyu.in/2018/05/28/MyBatisDao/&title=《MyBatis之Mapper动态代理开发》 — Lyouth's Blog&pic=https://www.liuyu.in/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.liuyu.in/2018/05/28/MyBatisDao/&title=《MyBatis之Mapper动态代理开发》 — Lyouth's Blog&source=1.SqlSession的使用范围SqlSession中封装了对数据库的操作，如：查询、插入、更新、删除等。通过SqlSessionFactory创建Sq..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
     </a>
+</div>
+
+        </div>
+        
+            
+
+
+        
+    </div>
+    
+<nav class="post-nav flex-row flex-justify-between">
   
+    <div class="prev">
+      <a href="/2018/05/28/MyBatisMappered/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">MyBatis输入映射和输出映射</h4>
+      </a>
+    </div>
   
-    <a href="/2018/05/28/MyBatisConfiger/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">MyBatis之配置文件中的配置</div>
-    </a>
+
+  
+    <div class="next">
+      <a href="/2018/05/28/MyBatisConfiger/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">MyBatis之配置文件中的配置</h4>
+      </a>
+    </div>
   
 </nav>
 
-  
+
+    
+    
+        <aside class="post-widget">
+            <nav class="post-toc-wrap" id="post-toc">
+                <strong>目录</strong>
+                <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1-SqlSession的使用范围"><span class="post-toc-number">1.</span> <span class="post-toc-text">1.SqlSession的使用范围</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#2-MyBatis开发DAO的方式"><span class="post-toc-number">2.</span> <span class="post-toc-text">2.MyBatis开发DAO的方式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#需求"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">需求</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-1原始Dao开发方法需要程序员编写Dao接口和Dao实现类。"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">2.1原始Dao开发方法需要程序员编写Dao接口和Dao实现类。</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-2Mapper动态代理的方式"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">2.2Mapper动态代理的方式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#2-2-1-Mapper开发规范"><span class="post-toc-number">2.3.1.</span> <span class="post-toc-text">2.2.1 Mapper开发规范</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#2-2-2mapper-xml-映射文件"><span class="post-toc-number">2.3.2.</span> <span class="post-toc-text">2.2.2mapper.xml(映射文件)</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#2-2-3编写Mapper接口"><span class="post-toc-number">2.3.3.</span> <span class="post-toc-text">2.2.3编写Mapper接口</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#2-2-4将mapper-xml在SqlMapConfing-xml中进行注册"><span class="post-toc-number">2.3.4.</span> <span class="post-toc-text">2.2.4将mapper.xml在SqlMapConfing.xml中进行注册</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#2-2-5测试代码"><span class="post-toc-number">2.3.5.</span> <span class="post-toc-text">2.2.5测试代码</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#2-2-6小结"><span class="post-toc-number">2.3.6.</span> <span class="post-toc-text">2.2.6小结</span></a></li></ol></li></ol></li></ol>
+            </nav>
+            <div class="toc-bar"><div>
+        </aside>
+    
 </article>
 
+    <div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        我们一起来让这个世界有趣一点
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/reward-wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/reward-wechat.jpg" data-alipay="/img/reward-alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
 
-</section>
-      
-      <aside id="sidebar">
-  
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recents</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/05/28/PracticeSpringMvc/">Spring MVC快速入门(一)</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/28/PracticeMysql/">MySQL语法查漏补缺</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/28/PracticeJDBC/">Java学习笔记之JDBC</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/28/PracticeMyBatis/">初识MyBatis</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/28/MyBatisMappered/">MyBatis输入映射和输出映射</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+</div>
 
-  
+        <footer class="footer">
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Mvc/">Spring Mvc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdbc/">jdbc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/">mybatis</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li></ul>
-    </div>
-  </div>
-
-  
+    <div class="top">
+        
+        
+            <p>
+    <span>Links：</span>
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li></ul>
-    </div>
-  </div>
+    <span class="blogroll-item">
+        <a href="https://www.liuyu.pw" target="_blank">HOME</a>
+    </span>
+    
+</p>
 
-  
-</aside>
-      
+        
     </div>
-    <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2018 Liuyu<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-      .
-      Theme by <a href="https://github.com/sun11/hexo-theme-paperbox" target="_blank">Paperbox</a>
+    
+    <div class="bottom">
+        <p>
+            <span>
+                Liuyu &copy; 2017 - 2018
+            </span>
+        		
+           	
+            
+            
+            <span>
+	            Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/codefine/hexo-theme-mellow" target="_blank">mellow</a>
+            </span>
+            
+            
+            
+        </p>
     </div>
-  </div>
 </footer>
-  </div>
-  <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-    <a href="/about" class="mobile-nav-link">About</a>
-  
-  <a href="#search" class="mobile-nav-link st-search-show-outputs">Search</a>
-</nav>
-  
 
-<!-- totop start -->
-<div id="totop">
-	<a title="To Top"></a>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.liuyu.in/2018/05/28/MyBatisDao/&title=《MyBatis之Mapper动态代理开发》 — Lyouth's Blog&pic=https://www.liuyu.in/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.liuyu.in/2018/05/28/MyBatisDao/&title=《MyBatis之Mapper动态代理开发》 — Lyouth's Blog&source=1.SqlSession的使用范围SqlSession中封装了对数据库的操作，如：查询、插入、更新、删除等。通过SqlSessionFactory创建Sq..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKUlEQVR42u3aMW7DMAwF0N7/0unSoUVh+5NUC0R6ngLHsfQyEBTJj4/4el1cv7/Nn7/6/P3O4gsDA+NtGa/bK9nW/SauNn3/F+R7w8DAOIdxFcEmy+dhNAnND3vGwMDAKG4iCc33fxAGBgbGKkb+TDUFxMDAwOgdYpNU7+Go2Qq4i8/iGBgYb8jIq+7///lP+hsYGBhvxXgVr3nDcu1+vt6MgYGxNSNfJm9b5qlh4YCavAEDA2NTxmS0Ii+x5cfgpJFQ7n9iYGBswcgDZfKeato3aRL8CLgYGBgHMO4fzQNu78jaexsGBsYJjMnYxCRN7CGbaSIGBsZ2jLwlkDcjJ3fKYxYYGBjHMOZH1lWhvBziMTAwtmP02o3JneqTowMwBgbGAYxVZbUkZOdJ3v2Kl9MiGBgY2zHy4nt1+fLhs5iMlqfbMDAw3pYxSd0mqWESgvMQj4GBcQKjt0CVUT0wFwI0BgbG1oxeUSxfPhmYqA5VXO4KAwNja0beXJxsKEn+7t+Z/BYDA2NXRp60JQW4JBHsjZo9YDAwMI5hrG0GVBPNXlsUAwMDo0qtsnv1tIfUEAMDYyPGq3hVk7ZqS7KaLGJgYJzAmAS7XkG/d2DOS3sYGBi7MnpBdp72VRsJD7/FwMA4gFEdGls7nTV5PwYGBkZvqCIv9OerRMMWGBgYGMXFVpXJotYmBgbGAYz5wESvFVot52FgYJzJqIa8pCSXBMpV7QEMDIytGZ/hdXRyET4bMQAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
-<!-- totop end -->
-
-<!-- swiftype search start -->
-
-<!-- swiftype search end -->
 
 
+    
+    <!-- main-js -->
+<script type="text/javascript" src="//cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript" src="/js/plugins/fastclick.js?v=1.2.8"></script>
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/lrsjng.jquery-qrcode/0.12.0/jquery.qrcode.min.js"></script>
+<script type="text/javascript" src="/js/method.js?v=1.2.8"></script>
+<script type="text/javascript" src="/js/blog.js?v=1.2.8"></script>
+
+<!-- third-party -->
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
 
 
-<script src="/js/script.js"></script>
 
-</div>
+<script type="text/javascript" src="/js/plugins/local_search.js?v=1.2.8"></script>
+<script type="text/javascript">
+	var search_path = "search.xml";
+	if (search_path.length === 0) {
+		search_path = "search.xml";
+	}
+	var path = "/" + search_path;
+	searchFunc(path, "local-search-input", "local-search-result");
+</script>
+
+
+
+    
+    
+
+
+
+
+
+    <!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+            processEscapes: true,
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+    <script>
+    (function() {
+        var OriginTitile = document.title, titleTime;
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                document.title = '死鬼去哪里了！';
+                clearTimeout(titleTime);
+            } else {
+                document.title = '(つェ⊂)咦!又好了!';
+                titleTime = setTimeout(function() {
+                    document.title = OriginTitile;
+                },2000);
+            }
+        });
+    })();
+</script>
+
+
+    
 </body>
 </html>

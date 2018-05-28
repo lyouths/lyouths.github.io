@@ -1,126 +1,217 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  
-  <title>MyBatis之配置文件中的配置 | Lyouth&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="MyBatis配置文件很重要，首先我们来看看MyBatis配置文件中的内容和顺序,并对各个参数进行解释以及如何使用">
-<meta name="keywords" content="mybatis">
-<meta property="og:type" content="article">
-<meta property="og:title" content="MyBatis之配置文件中的配置">
-<meta property="og:url" content="https://www.liuyu.in/2018/05/28/MyBatisConfiger/index.html">
-<meta property="og:site_name" content="Lyouth&#39;s Blog">
-<meta property="og:description" content="MyBatis配置文件很重要，首先我们来看看MyBatis配置文件中的内容和顺序,并对各个参数进行解释以及如何使用">
-<meta property="og:locale" content="default">
-<meta property="og:image" content="http://owtr5yq3h.bkt.clouddn.com/%E5%88%AB%E5%90%8D.png">
-<meta property="og:updated_time" content="2018-04-25T08:11:17.040Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MyBatis之配置文件中的配置">
-<meta name="twitter:description" content="MyBatis配置文件很重要，首先我们来看看MyBatis配置文件中的内容和顺序,并对各个参数进行解释以及如何使用">
-<meta name="twitter:image" content="http://owtr5yq3h.bkt.clouddn.com/%E5%88%AB%E5%90%8D.png">
-  
-    <link rel="alternative" href="/atom.xml" title="Lyouth&#39;s Blog" type="application/atom+xml">
-  
-  
-  <link rel="stylesheet" href="/css/style.css">
-  
-    <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
-  
-  
-<script type="text/javascript">
-var isWX = /micromessenger/i.test(navigator.userAgent);
-if (isWX) {
-  document.write('<br/><br/><h1 style="text-align: center;font-size:32px;" >╮(╯_╰)╭</h1><br/><br/><h4 style="text-align: center;" >请在浏览器中打开。</h4><br/><h4 style="text-align: center;" >Please open in the browser.</h4>');
-  window.stop ? window.stop() : document.execCommand("Stop");
-}
-</script>
-
-
+    <meta charset="utf-8">
+    
+    
+    <title>MyBatis之配置文件中的配置 | Lyouth&#39;s Blog | 分享资源、教程</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="mybatis">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.2.8">
+    
+    <script type="text/javascript">
+        // Data Center
+        var DC = {
+            reward:	true,
+            lv: JSON.parse('{"enable":false,"app_id":null,"app_key":null,"icon":true}'),
+            v: JSON.parse('{"enable":false,"appid":null,"appkey":null,"notify":true,"verify":true,"placeholder":"give me some sugers plz...","avatar":"wavatar"}'),
+            g: JSON.parse('{"enable":false,"lazy":true,"owner":"codefine","repo":"gitment","oauth":{"client_id":null,"client_secret":null},"perPage":10}')
+        };
+    </script>
+    <script type="text/javascript">
+        window.lazyScripts=[];
+    </script>
 </head>
 
+
 <body>
-<div id="container">
-  <div id="wrap">
-    <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <nav id="upper-nav" class="inner">
-      <a id="main-nav-toggle" class="nav-icon"></a>
-      <div class="sub-nav">
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      
+      <img src="/img/brand.jpg" class="brand-bg">
+      
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Liuyu</h5>
+          <a href="mailto:i@liuyu.in" title="i@liuyu.in" class="mail">
+            
+              <span>i</span>
+            
+              <span>@</span>
+            
+              <span>l</span>
+            
+              <span>i</span>
+            
+              <span>u</span>
+            
+              <span>y</span>
+            
+              <span>u</span>
+            
+              <span>.</span>
+            
+              <span>i</span>
+            
+              <span>n</span>
+            
+          </a>
+        </hgroup>
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        
-          <a id="nav-github" class="nav-icon" href="https://github.com/liuyu1994"></a>
+        <ul class="menu-link">
+          
+              <li>
+                <a href="https://github.com/lyouths" target="_blank">
+                  <i class="icon icon-lg icon-github"></i>
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://weibo.com/puzzors" target="_blank">
+                  <i class="icon icon-lg icon-weibo"></i>
+                </a>
+              </li>
+            
+        </ul>
         
       </div>
-    </nav>
-    <div id="header-title">
-      
-        <h1 id="blog-title-wrap">
-          <a href="/" id="blog-title">Lyouth&#39;s Blog</a>
-        </h1>
-      
     </div>
-    <div id="contenedor">
-      <ul class="cube">
-        <li class="cara">MyLogo</li>
-        <li class="cara"></li>
-        <li class="cara"></li>
-        <li class="cara"></li>
-        <li class="cara"></li>
-        <li class="cara"></li>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                HOME
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                CATEGORIES
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                TAGS
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                ARCHIVES
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-user"></i>
+                ABOUT
+              </a>
+            </li>
+        
+            <li class="">
+              <a href="/custom"  >
+                <i class="icon icon-lg icon-plus-square"></i>
+                CUSTOM
+              </a>
+            </li>
+        
       </ul>
     </div>
-    <nav id="main-nav">
-      
-        <a class="main-nav-link" href="/">Home</a>
-      
-        <a class="main-nav-link" href="/archives">Archives</a>
-      
-        <a class="main-nav-link" href="/about">About</a>
-      
-      <a class="main-nav-link st-search-show-outputs">Search</a>
-    </nav>
   </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row clearfix">
+        <a href="javascript:;" class="header-icon pull-left waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">
+            <span>MyBatis之配置文件中的配置</span>
+            
+        </div>
+        
+        <a href="javascript:;" id="site_search_btn" class="header-icon pull-right waves-effect waves-circle waves-light">
+            <i class="icon icon-lg icon-search"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+    <img src="/img/banner.jpg" class="header-bg">
+    <div class="container fade-scale">
+        <h1 class="title">MyBatis之配置文件中的配置</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-05-28T12:35:50.564Z" itemprop="datePublished" class="page-time">
+  2018-05-28
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/mybatis/">mybatis</a></li></ul>
+
+            
+        </h5>
+        
+    </div>
+    
+
 </header>
 
-    <div class="outer">
-      <section id="main"><article id="post-MyBatisConfiger" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <h3 href="/2018/05/28/MyBatisConfiger/" class="article-date">
-  <time datetime="2018-05-28T12:35:50.564Z" itemprop="datePublished">2018-05-28</time>
-</h3>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/mybatis/">mybatis</a>
-  </div>
+<div id="site_search">
+    <div class="search-title clearfix">
+        <span class="pull-left">
+          <i class="icon icon-lg icon-search"></i>
+        </span>
+        <input type="text" id="local-search-input" name="q" results="0" placeholder="search my blog..." class="form-control pull-left"/>
+        <a href="javascript:;" class="close pull-right waves-effect waves-circle waves-light">
+          <i class="icon icon-lg icon-close"></i>
+        </a>
+    </div>
+    <div id="local-search-result"></div>
+</div>
 
-  </div>
-  <div class="article-inner">
-  <div class="curve-down">
-  <div class="fill-content">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      MyBatis之配置文件中的配置
-    </h1>
-  
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-        <p>MyBatis配置文件很重要，首先我们来看看MyBatis配置文件中的内容和顺序,并对各个参数进行解释以及如何使用<br><a id="more"></a></p>
+<div class="container body-wrap">
+    <article id="post-MyBatisConfiger"
+  class="post-article article-type-post" itemprop="blogPost">
+    <div class="post-card">
+        <h1 class="post-card-title">MyBatis之配置文件中的配置</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-05-28 20:35:50" datetime="2018-05-28T12:35:50.564Z"  itemprop="datePublished">2018-05-28</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/mybatis/">mybatis</a></li></ul>
+
+
+
+            
+
+            
+
+
+            
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            
+            <p>MyBatis配置文件很重要，首先我们来看看MyBatis配置文件中的内容和顺序,并对各个参数进行解释以及如何使用<br><a id="more"></a></p>
 <h3 id="1-配置内容"><a href="#1-配置内容" class="headerlink" title="1.配置内容"></a>1.配置内容</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">properties（属性）</span><br><span class="line">settings（全局配置参数）</span><br><span class="line">typeAliases（类型别名）</span><br><span class="line">typeHandlers（类型处理器）</span><br><span class="line">objectFactory（对象工厂）</span><br><span class="line">plugins（插件）</span><br><span class="line">environments（环境集合属性对象）</span><br><span class="line">        environment（环境子属性对象）</span><br><span class="line">            transactionManager（事务管理）</span><br><span class="line">            dataSource（数据源）</span><br><span class="line">mappers（映射器）</span><br></pre></td></tr></table></figure>
 <h3 id="2-properties（属性）"><a href="#2-properties（属性）" class="headerlink" title="2.properties（属性）"></a>2.properties（属性）</h3><p>SqlMapConfig.xml可以引用java属性文件中的配置信息如下：<br>在classpath下定义db.properties文件<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">jdbc.driver=com.mysql.jdbc.Driver</span><br><span class="line">jdbc.url=jdbc:mysql://localhost:3306/mybatis?characterEncoding=utf-8</span><br><span class="line">jdbc.username=root</span><br><span class="line">jdbc.password=root</span><br></pre></td></tr></table></figure></p>
 <p>然后在SqlMapperConfig.xml中进行配置:<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">properties</span> <span class="attr">resource</span>=<span class="string">"db.properties"</span>&gt;</span><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
@@ -132,7 +223,11 @@ if (isWX) {
 <li>3.最后读取parameterType(即insert标签或是update标签或是…)传递的属性，它会覆盖已读取的同名属性。</li>
 </ul>
 <p>所以我们建议使用properties标签时，不要在properties标签之间定义属性，只引用在.properties文件中定义的属性，并且.properties文件中定义的key值要有一些特殊的规则。例如我上述定义key值时前面都加了jdbc.的前缀。</p>
-<h3 id="3-typeAliases（类型别名）"><a href="#3-typeAliases（类型别名）" class="headerlink" title="3.typeAliases（类型别名）"></a>3.typeAliases（类型别名）</h3><h4 id="3-1mybatis支持别名："><a href="#3-1mybatis支持别名：" class="headerlink" title="3.1mybatis支持别名："></a>3.1mybatis支持别名：</h4><p><img src="http://owtr5yq3h.bkt.clouddn.com/%E5%88%AB%E5%90%8D.png" alt="支持的别名"><br>这里我们采用自定义的别名，在SqlMapperConfig.xml中进行如下配置:<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">typeAliases</span>&gt;</span> </span><br><span class="line">		<span class="comment">&lt;!-- </span></span><br><span class="line"><span class="comment">		定义单个pojo类别名</span></span><br><span class="line"><span class="comment">		type:类的全路劲名称</span></span><br><span class="line"><span class="comment">		alias:别名</span></span><br><span class="line"><span class="comment">		--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">typeAlias</span> <span class="attr">type</span>=<span class="string">"cn.liuyu.pojo.User"</span> <span class="attr">alias</span>=<span class="string">"user"</span>/&gt;</span> </span><br><span class="line">		</span><br><span class="line">		<span class="comment">&lt;!-- 使用包扫描的方式批量定义别名 </span></span><br><span class="line"><span class="comment">		定以后别名等于类名,不区分大小写,但是建议按照java命名规则来,首字母小写,以后每个单词的首字母大写</span></span><br><span class="line"><span class="comment">		--&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">package</span> <span class="attr">name</span>=<span class="string">"cn.liuyu.pojo"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">typeAliases</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="3-typeAliases（类型别名）"><a href="#3-typeAliases（类型别名）" class="headerlink" title="3.typeAliases（类型别名）"></a>3.typeAliases（类型别名）</h3><h4 id="3-1mybatis支持别名："><a href="#3-1mybatis支持别名：" class="headerlink" title="3.1mybatis支持别名："></a>3.1mybatis支持别名：</h4><figure class="image-box">
+                <img src="http://owtr5yq3h.bkt.clouddn.com/%E5%88%AB%E5%90%8D.png" alt="支持的别名" title="" class="">
+                <p>支持的别名</p>
+            </figure>
+<p>这里我们采用自定义的别名，在SqlMapperConfig.xml中进行如下配置:<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">typeAliases</span>&gt;</span> </span><br><span class="line">		<span class="comment">&lt;!-- </span></span><br><span class="line"><span class="comment">		定义单个pojo类别名</span></span><br><span class="line"><span class="comment">		type:类的全路劲名称</span></span><br><span class="line"><span class="comment">		alias:别名</span></span><br><span class="line"><span class="comment">		--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">typeAlias</span> <span class="attr">type</span>=<span class="string">"cn.liuyu.pojo.User"</span> <span class="attr">alias</span>=<span class="string">"user"</span>/&gt;</span> </span><br><span class="line">		</span><br><span class="line">		<span class="comment">&lt;!-- 使用包扫描的方式批量定义别名 </span></span><br><span class="line"><span class="comment">		定以后别名等于类名,不区分大小写,但是建议按照java命名规则来,首字母小写,以后每个单词的首字母大写</span></span><br><span class="line"><span class="comment">		--&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">package</span> <span class="attr">name</span>=<span class="string">"cn.liuyu.pojo"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">typeAliases</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
 <p>里面包括定义单个别名和批量别名定义(即一次性定义一个包下所有.java文件的别名)。</p>
 <p>定义别名后这样我们在parameterType和resultType中使用时就不用再繁琐的指定类的全限定类名了，像下面这样使用即可<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=<span class="string">"findUserById"</span> parameterType=<span class="string">"int"</span> resultType=<span class="string">"user"</span>&gt;</span><br><span class="line">	select * from user where id=#&#123;id&#125;</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure></p>
 <h3 id="4-mappers（映射器）"><a href="#4-mappers（映射器）" class="headerlink" title="4.mappers（映射器）"></a>4.mappers（映射器）</h3><p>Mapper配置的几种方法：</p>
@@ -151,148 +246,295 @@ if (isWX) {
 </ol>
 <p><strong>注意</strong>：此种方法要求mapper接口名称和mapper映射文件名称相同，且放在同一个目录中。</p>
 
-      
-    </div>
-    <footer class="article-footer">
-      <div class="article-footer-content">
+        </div>
         
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mybatis/">mybatis</a></li></ul>
+<blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2018-04-25T08:11:17.040Z" itemprop="dateUpdated">2018-04-25 16:11:17</time>
+</span><br>
 
-        <a data-url="https://www.liuyu.in/2018/05/28/MyBatisConfiger/" data-id="cjhq8wdnc000420uk528jjk1t" class="article-share-link">Share</a>
+
         
-      </div>
+        转载注明出处，原文地址：<a href="/2018/05/28/MyBatisConfiger/" target="_blank" rel="external">https://www.liuyu.in/2018/05/28/MyBatisConfiger/</a>
+        
+    </div>
+    <footer>
+        <a href="https://www.liuyu.in">
+            <img src="/img/avatar.jpg" alt="Liuyu">
+            Liuyu
+        </a>
     </footer>
-  </div>
-  </div>
-  </div>
-  
+</blockquote>
+
+        
+            <div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+            
+        
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mybatis/">mybatis</a></li></ul>
+
+            <div class="page-share-wrap">
     
-<nav id="article-nav">
-  
-    <a href="/2018/05/28/MyBatisDao/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          MyBatis之Mapper动态代理开发
-        
-      </div>
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.liuyu.in/2018/05/28/MyBatisConfiger/&title=《MyBatis之配置文件中的配置》 — Lyouth's Blog&pic=https://www.liuyu.in/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.liuyu.in/2018/05/28/MyBatisConfiger/&title=《MyBatis之配置文件中的配置》 — Lyouth's Blog&source=MyBatis配置文件很重要，首先我们来看看MyBatis配置文件中的内容和顺序,并对各个参数进行解释以及如何使用" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
     </a>
+</div>
+
+        </div>
+        
+            
+
+
+        
+    </div>
+    
+<nav class="post-nav flex-row flex-justify-between">
   
+    <div class="prev">
+      <a href="/2018/05/28/MyBatisDao/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">MyBatis之Mapper动态代理开发</h4>
+      </a>
+    </div>
   
-    <a href="/2018/05/28/JDK8-Lambda/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">JDK8新特性之Lambda表达式</div>
-    </a>
+
+  
+    <div class="next">
+      <a href="/2018/05/28/JDK8-Lambda/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">JDK8新特性之Lambda表达式</h4>
+      </a>
+    </div>
   
 </nav>
 
-  
+
+    
+    
+        <aside class="post-widget">
+            <nav class="post-toc-wrap" id="post-toc">
+                <strong>目录</strong>
+                <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-配置内容"><span class="post-toc-number">1.</span> <span class="post-toc-text">1.配置内容</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-properties（属性）"><span class="post-toc-number">2.</span> <span class="post-toc-text">2.properties（属性）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-typeAliases（类型别名）"><span class="post-toc-number">3.</span> <span class="post-toc-text">3.typeAliases（类型别名）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#3-1mybatis支持别名："><span class="post-toc-number">3.1.</span> <span class="post-toc-text">3.1mybatis支持别名：</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4-mappers（映射器）"><span class="post-toc-number">4.</span> <span class="post-toc-text">4.mappers（映射器）</span></a></li></ol>
+            </nav>
+            <div class="toc-bar"><div>
+        </aside>
+    
 </article>
 
+    <div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        我们一起来让这个世界有趣一点
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/reward-wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/reward-wechat.jpg" data-alipay="/img/reward-alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
 
-</section>
-      
-      <aside id="sidebar">
-  
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recents</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/05/28/PracticeSpringMvc/">Spring MVC快速入门(一)</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/28/PracticeMysql/">MySQL语法查漏补缺</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/28/PracticeJDBC/">Java学习笔记之JDBC</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/28/PracticeMyBatis/">初识MyBatis</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/28/MyBatisMappered/">MyBatis输入映射和输出映射</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+</div>
 
-  
+        <footer class="footer">
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Mvc/">Spring Mvc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdbc/">jdbc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/">mybatis</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li></ul>
-    </div>
-  </div>
-
-  
+    <div class="top">
+        
+        
+            <p>
+    <span>Links：</span>
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li></ul>
-    </div>
-  </div>
+    <span class="blogroll-item">
+        <a href="https://www.liuyu.pw" target="_blank">HOME</a>
+    </span>
+    
+</p>
 
-  
-</aside>
-      
+        
     </div>
-    <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2018 Liuyu<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-      .
-      Theme by <a href="https://github.com/sun11/hexo-theme-paperbox" target="_blank">Paperbox</a>
+    
+    <div class="bottom">
+        <p>
+            <span>
+                Liuyu &copy; 2017 - 2018
+            </span>
+        		
+           	
+            
+            
+            <span>
+	            Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/codefine/hexo-theme-mellow" target="_blank">mellow</a>
+            </span>
+            
+            
+            
+        </p>
     </div>
-  </div>
 </footer>
-  </div>
-  <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-    <a href="/about" class="mobile-nav-link">About</a>
-  
-  <a href="#search" class="mobile-nav-link st-search-show-outputs">Search</a>
-</nav>
-  
 
-<!-- totop start -->
-<div id="totop">
-	<a title="To Top"></a>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://www.liuyu.in/2018/05/28/MyBatisConfiger/&title=《MyBatis之配置文件中的配置》 — Lyouth's Blog&pic=https://www.liuyu.in/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://www.liuyu.in/2018/05/28/MyBatisConfiger/&title=《MyBatis之配置文件中的配置》 — Lyouth's Blog&source=MyBatis配置文件很重要，首先我们来看看MyBatis配置文件中的内容和顺序,并对各个参数进行解释以及如何使用" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLklEQVR42u3aQXLEIAwFUd//0s4BPIP7S0yqgGblShzDY6EgievC436M52+/vf98Z/z8/Nq0IUOGjGUZ93CQZaWz1GDjrZQhQ8YJjG8Tj59nBc3x9o3XJkOGDBl9Kj9Q1uaVIUOGDHIQTA+U/QOoDBkyzmSQCdJ0lEzPYdNycRkyZCzI4Enm/z//pL8hQ4aMpRh3OEihP/1J2gz4sCoZMmRszeABLr1mwQ+CKEEl65EhQ8amjPGHeNjlQZMU0XgL4eKfkyFDxrKM9HoEL4qlVzHI1154MmTIOICRBs30qMe3iYdaGTJknMDgoZOnrzy88gscwTULGTJkbMf4BYYfKDu9SBkyZJzG6FyqSBPRdDuKLQQZMmRsx0jLZ7US2wVG+qYMGTJOY8y6QsHLZLUk+SUjlyFDxnaMWtF/VgOSj5eNkyFDxtaM2gWI2vTkANpKfWXIkHEYo/bRWqCcFZRlyJCxKyPtG/AASor7tW1CWbgMGTI2YpAQzJuX6UUxshGtlFiGDBkbMdIEtZNqpuE4wMiQIeNgRnrgG4PT22rB7DJkyDiAkaaOtbYBwaSbIkOGjL0Zdzg6h7m0oBa0EGTIkLE1o9PmTA+IPOCSpddCtgwZMtZl8CBba0nOLefJkCHjZEYt8KWtx/5/gK/vy5AhQwYIvp0GA+G9UGXIkCGjUSzjf8tXOOFoKEOGjAUZaTMgLbF1ynmTc3EZMmQsyKiFPN4A6F+5mNbIlCFDxnqMP0ZE7s0WtZMCAAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
-<!-- totop end -->
-
-<!-- swiftype search start -->
-
-<!-- swiftype search end -->
 
 
+    
+    <!-- main-js -->
+<script type="text/javascript" src="//cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript" src="/js/plugins/fastclick.js?v=1.2.8"></script>
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/lrsjng.jquery-qrcode/0.12.0/jquery.qrcode.min.js"></script>
+<script type="text/javascript" src="/js/method.js?v=1.2.8"></script>
+<script type="text/javascript" src="/js/blog.js?v=1.2.8"></script>
+
+<!-- third-party -->
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
 
 
-<script src="/js/script.js"></script>
 
-</div>
+<script type="text/javascript" src="/js/plugins/local_search.js?v=1.2.8"></script>
+<script type="text/javascript">
+	var search_path = "search.xml";
+	if (search_path.length === 0) {
+		search_path = "search.xml";
+	}
+	var path = "/" + search_path;
+	searchFunc(path, "local-search-input", "local-search-result");
+</script>
+
+
+
+    
+    
+
+
+
+
+
+    <!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+            processEscapes: true,
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+    <script>
+    (function() {
+        var OriginTitile = document.title, titleTime;
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                document.title = '死鬼去哪里了！';
+                clearTimeout(titleTime);
+            } else {
+                document.title = '(つェ⊂)咦!又好了!';
+                titleTime = setTimeout(function() {
+                    document.title = OriginTitile;
+                },2000);
+            }
+        });
+    })();
+</script>
+
+
+    
 </body>
 </html>
