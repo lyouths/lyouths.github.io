@@ -1,0 +1,288 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  
+  <title>MyBatis输入映射和输出映射 | Lyouth&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在MyBatis中，我们通过parameterType完成输入映射(指将值映射到sql语句的占位符中，值的类型与dao层响应方法的参数类型一致)，通过resultType完成输出映射(从数据库中输出，通过dao层的方法查询到的数据输出到pojo对象中)。 注意输入与输出都是相对于数据库的。接下来我们先谈谈输入映射。工程目录结构如下:">
+<meta name="keywords" content="mybatis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MyBatis输入映射和输出映射">
+<meta property="og:url" content="https://www.liuyu.in/2018/05/28/MyBatisMappered/index.html">
+<meta property="og:site_name" content="Lyouth&#39;s Blog">
+<meta property="og:description" content="在MyBatis中，我们通过parameterType完成输入映射(指将值映射到sql语句的占位符中，值的类型与dao层响应方法的参数类型一致)，通过resultType完成输出映射(从数据库中输出，通过dao层的方法查询到的数据输出到pojo对象中)。 注意输入与输出都是相对于数据库的。接下来我们先谈谈输入映射。工程目录结构如下:">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://owtr5yq3h.bkt.clouddn.com/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png">
+<meta property="og:updated_time" content="2018-04-26T03:46:19.583Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MyBatis输入映射和输出映射">
+<meta name="twitter:description" content="在MyBatis中，我们通过parameterType完成输入映射(指将值映射到sql语句的占位符中，值的类型与dao层响应方法的参数类型一致)，通过resultType完成输出映射(从数据库中输出，通过dao层的方法查询到的数据输出到pojo对象中)。 注意输入与输出都是相对于数据库的。接下来我们先谈谈输入映射。工程目录结构如下:">
+<meta name="twitter:image" content="http://owtr5yq3h.bkt.clouddn.com/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Lyouth&#39;s Blog" type="application/atom+xml">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+  
+<script type="text/javascript">
+var isWX = /micromessenger/i.test(navigator.userAgent);
+if (isWX) {
+  document.write('<br/><br/><h1 style="text-align: center;font-size:32px;" >╮(╯_╰)╭</h1><br/><br/><h4 style="text-align: center;" >请在浏览器中打开。</h4><br/><h4 style="text-align: center;" >Please open in the browser.</h4>');
+  window.stop ? window.stop() : document.execCommand("Stop");
+}
+</script>
+
+
+</head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <nav id="upper-nav" class="inner">
+      <a id="main-nav-toggle" class="nav-icon"></a>
+      <div class="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        
+          <a id="nav-github" class="nav-icon" href="https://github.com/liuyu1994"></a>
+        
+      </div>
+    </nav>
+    <div id="header-title">
+      
+        <h1 id="blog-title-wrap">
+          <a href="/" id="blog-title">Lyouth&#39;s Blog</a>
+        </h1>
+      
+    </div>
+    <div id="contenedor">
+      <ul class="cube">
+        <li class="cara">MyLogo</li>
+        <li class="cara"></li>
+        <li class="cara"></li>
+        <li class="cara"></li>
+        <li class="cara"></li>
+        <li class="cara"></li>
+      </ul>
+    </div>
+    <nav id="main-nav">
+      
+        <a class="main-nav-link" href="/">Home</a>
+      
+        <a class="main-nav-link" href="/archives">Archives</a>
+      
+        <a class="main-nav-link" href="/about">About</a>
+      
+      <a class="main-nav-link st-search-show-outputs">Search</a>
+    </nav>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main"><article id="post-MyBatisMappered" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <h3 href="/2018/05/28/MyBatisMappered/" class="article-date">
+  <time datetime="2018-05-28T12:35:50.595Z" itemprop="datePublished">2018-05-28</time>
+</h3>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/mybatis/">mybatis</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+  <div class="curve-down">
+  <div class="fill-content">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      MyBatis输入映射和输出映射
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <p>在MyBatis中，我们通过parameterType完成输入映射(指将值映射到sql语句的占位符中，值的类型与dao层响应方法的参数类型一致)，通过resultType完成输出映射(从数据库中输出，通过dao层的方法查询到的数据输出到pojo对象中)。 注意输入与输出都是相对于数据库的。接下来我们先谈谈输入映射。工程目录结构如下:<br><a id="more"></a><br><img src="http://owtr5yq3h.bkt.clouddn.com/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png" alt="目录结构"></p>
+<h3 id="1-输入映射parameterType"><a href="#1-输入映射parameterType" class="headerlink" title="1.输入映射parameterType"></a>1.输入映射parameterType</h3><p>通过parameterType传入简单类型或对象，我们之前讲过了，接下来我们要讲的是parameterType传递pojo包装对象。可以定义pojo包装类型扩展mapper接口输入参数的内容。pojo对象Mybatis使用ognl表达式解析对象字段的值，#{}或者${}括号中的值为pojo属性名称。</p>
+<p>我们在pojo包下创建User类<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id;</span><br><span class="line">	<span class="keyword">private</span> String username;<span class="comment">// 用户姓名</span></span><br><span class="line">	<span class="keyword">private</span> String sex;<span class="comment">// 性别</span></span><br><span class="line">	<span class="keyword">private</span> Date birthday;<span class="comment">// 生日</span></span><br><span class="line">	<span class="keyword">private</span> String address;<span class="comment">// 地址</span></span><br><span class="line">	<span class="comment">//此处省略Get/Set/ToString方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>创建QueryVo类，用于对User属性进行拓展<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QueryVo</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> User user;</span><br><span class="line">	<span class="comment">//此处省略Get/Set/ToString方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>UserMapper.xml中添加如下配置信息:<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUserbyVo"</span> <span class="attr">parameterType</span>=<span class="string">"cn.liuyu.pojo.QueryVo"</span> <span class="attr">resultType</span>=<span class="string">"cn.liuyu.pojo.User"</span>&gt;</span></span><br><span class="line">    select * from user where username like '%$&#123;user.username&#125;%' and sex=#&#123;user.sex&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>UserMapper.java中添加方法:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> List&lt;User&gt; <span class="title">findUserbyVo</span><span class="params">(QueryVo vo)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>先在测试类初始化会话工厂<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserMapperTest</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> SqlSessionFactory factory;</span><br><span class="line">	<span class="comment">//作用:在测试方法前执行这个方法</span></span><br><span class="line">	<span class="meta">@Before</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUp</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">		String resource = <span class="string">"SqlMapConfig.xml"</span>;</span><br><span class="line">		<span class="comment">//通过流将核心配置文件读取进来</span></span><br><span class="line">		InputStream inputStream = Resources.getResourceAsStream(resource);</span><br><span class="line">		<span class="comment">//通过核心配置文件输入流来创建会话工厂</span></span><br><span class="line">		factory = <span class="keyword">new</span> SqlSessionFactoryBuilder().build(inputStream);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后便可以进行测试:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindUserByVo</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">	SqlSession openSession = factory.openSession();</span><br><span class="line">	<span class="comment">//通过getMapper方法来实例化接口</span></span><br><span class="line">	UserMapper mapper = openSession.getMapper(UserMapper.class);</span><br><span class="line">	QueryVo vo = <span class="keyword">new</span> QueryVo();</span><br><span class="line">	User user = <span class="keyword">new</span> User();</span><br><span class="line">	user.setUsername(<span class="string">"王"</span>);</span><br><span class="line">	user.setSex(<span class="string">"2"</span>);</span><br><span class="line">	vo.setUser(user);</span><br><span class="line">	List&lt;User&gt; list = mapper.findUserbyVo(vo);</span><br><span class="line">	System.out.println(list);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-输出映射-resultType和resultMap"><a href="#2-输出映射-resultType和resultMap" class="headerlink" title="2.输出映射(resultType和resultMap)"></a>2.输出映射(resultType和resultMap)</h3><p>输出映射有resultType和resultMap,他们都是指定输出结果的类型(pojo、简单类型、hashmap…)，并将sql查询结果映射为java对象 。</p>
+<h4 id="2-1resultType-输出简单类型"><a href="#2-1resultType-输出简单类型" class="headerlink" title="2.1resultType(输出简单类型)"></a>2.1resultType(输出简单类型)</h4><p>UserMapper.xml文件中添加如下配置:<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 只有返回结果为一行一列的时候,那么返回值类型才可以指定成基本类型 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUserCount"</span> <span class="attr">resultType</span>=<span class="string">"java.lang.Integer"</span>&gt;</span></span><br><span class="line">    select count(*) from user </span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>然后在UserMapper.java中添加如下方法:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Integer <span class="title">findUserCount</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>进行测试：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindUserCount</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">	SqlSession openSession = factory.openSession();</span><br><span class="line">	<span class="comment">//通过getMapper方法来实例化接口</span></span><br><span class="line">	UserMapper mapper = openSession.getMapper(UserMapper.class);</span><br><span class="line">	Integer count = mapper.findUserCount();</span><br><span class="line">	System.out.println(<span class="string">"====="</span> + count);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里因为查询的记录结果集为一条记录且该记录只有1列，所以我们使用的是返回简单类型。</p>
+<p>使用resultType时我们应该注意:sql查询的列名要和resultType指定pojo的属性名相同，指定相同属性方可映射成功，如果sql查询的列名要和resultType指定pojo的属性名全部不相同(或是部分不相同)，则映射到pojo对象中的对应属性为null。例如有时候我们不需要查询select * from user where id = ?而是select username,address _address where id = ? 此时我们给查询的address列名给了一个别名_address，这样我们通过查询表中address的数据然后在将它映射到User对象时，该对象的address属性就为null，即没将从表中查询到的address数据映射到user对象的address属性中。</p>
+<p>此时resultMap就出现了。如果sql查询列名和最终要映射的pojo的属性名不一致，使用resultMap就可以将列名和pojo的属性名做一个对应关系 （列名和属性名映射配置）。</p>
+<h4 id="2-2resultMap"><a href="#2-2resultMap" class="headerlink" title="2.2resultMap"></a>2.2resultMap</h4><p>使用resultMap需要在UserMapper.xml中进行配置:<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 一对一:手动映射 --&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- id标签指定主键字段对应关系</span></span><br><span class="line"><span class="comment">		column:列,数据库中的字段名称</span></span><br><span class="line"><span class="comment">		property:属性,java中pojo中的属性名称</span></span><br><span class="line"><span class="comment">		 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">"userListResultMap"</span> <span class="attr">type</span>=<span class="string">"user"</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 这个标签指定单个对象的对应关系</span></span><br><span class="line"><span class="comment">property:指定将数据放入Orders中的user属性中</span></span><br><span class="line"><span class="comment">javaType:user属性的类型</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"id"</span> <span class="attr">property</span>=<span class="string">"id"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"username"</span> <span class="attr">property</span>=<span class="string">"username"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"birthday"</span> <span class="attr">property</span>=<span class="string">"birthday"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"sex"</span> <span class="attr">property</span>=<span class="string">"sex"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"address"</span> <span class="attr">property</span>=<span class="string">"address"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>在UserMapper.xml进行如下配置:<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"userListResultMap"</span> <span class="attr">parameterType</span>=<span class="string">"cn.liuyu.pojo.QueryVo"</span> <span class="attr">resultMap</span>=<span class="string">"userListResultMap"</span>&gt;</span></span><br><span class="line">    SELECT id,username,birthday,sex from user where username like '%$&#123;user.username&#125;%'</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>UserMapper.java文件中:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> List&lt;User&gt; <span class="title">userListResultMap</span><span class="params">(QueryVo vo)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>测试代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindUserListResultMap</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">	SqlSession openSession=factory.openSession();</span><br><span class="line">	<span class="comment">//通过getMapper方法来实例化接口</span></span><br><span class="line">	UserMapper mapper=openSession.getMapper(UserMapper.class);</span><br><span class="line">	QueryVo vo=<span class="keyword">new</span> QueryVo();</span><br><span class="line">	User user=<span class="keyword">new</span> User();</span><br><span class="line">	user.setUsername(<span class="string">"张"</span>);</span><br><span class="line">	vo.setUser(user);</span><br><span class="line">	List&lt;User&gt; list=mapper.userListResultMap(vo);</span><br><span class="line">	System.out.println(list);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行测试类发现，即使我们查询的列名与User对象的属性不一样，但是我们的确映射成功了。(ps:这里都是一致的)</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <div class="article-footer-content">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mybatis/">mybatis</a></li></ul>
+
+        <a data-url="https://www.liuyu.in/2018/05/28/MyBatisMappered/" data-id="cjhq8kwr5000icgukcjdp3d1x" class="article-share-link">Share</a>
+        
+      </div>
+    </footer>
+  </div>
+  </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/05/28/PracticeMyBatis/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          初识MyBatis
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/05/28/MyBatisDao/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">MyBatis之Mapper动态代理开发</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/05/28/PracticeMysql/">MySQL语法查漏补缺</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/28/PracticeSpringMvc/">Spring MVC快速入门(一)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/28/PracticeJDBC/">Java学习笔记之JDBC</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/28/PracticeMyBatis/">初识MyBatis</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/28/MyBatisMappered/">MyBatis输入映射和输出映射</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Mvc/">Spring Mvc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdbc/">jdbc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/">mybatis</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Liuyu<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/sun11/hexo-theme-paperbox" target="_blank">Paperbox</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+  <a href="#search" class="mobile-nav-link st-search-show-outputs">Search</a>
+</nav>
+  
+
+<!-- totop start -->
+<div id="totop">
+	<a title="To Top"></a>
+</div>
+<!-- totop end -->
+
+<!-- swiftype search start -->
+
+<!-- swiftype search end -->
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/lrsjng.jquery-qrcode/0.12.0/jquery.qrcode.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>

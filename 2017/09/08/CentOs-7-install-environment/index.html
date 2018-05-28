@@ -1,0 +1,276 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  
+  <title>CentOs 7下安装JAVA环境 | Lyouth&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1.安装MySQLCentOS 7的yum源中貌似没有正常安装MySQL时的MySql-sever文件，需要去官网上下载,分为三个步骤：wget http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpmrpm -ivh mysql-community-release-el7-5.noarch.rpmyum install m">
+<meta name="keywords" content="Linux,Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOs 7下安装JAVA环境">
+<meta property="og:url" content="https://www.liuyu.in/2017/09/08/CentOs-7-install-environment/index.html">
+<meta property="og:site_name" content="Lyouth&#39;s Blog">
+<meta property="og:description" content="1.安装MySQLCentOS 7的yum源中貌似没有正常安装MySQL时的MySql-sever文件，需要去官网上下载,分为三个步骤：wget http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpmrpm -ivh mysql-community-release-el7-5.noarch.rpmyum install m">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-04-20T14:22:58.602Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CentOs 7下安装JAVA环境">
+<meta name="twitter:description" content="1.安装MySQLCentOS 7的yum源中貌似没有正常安装MySQL时的MySql-sever文件，需要去官网上下载,分为三个步骤：wget http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpmrpm -ivh mysql-community-release-el7-5.noarch.rpmyum install m">
+  
+    <link rel="alternative" href="/atom.xml" title="Lyouth&#39;s Blog" type="application/atom+xml">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+  
+<script type="text/javascript">
+var isWX = /micromessenger/i.test(navigator.userAgent);
+if (isWX) {
+  document.write('<br/><br/><h1 style="text-align: center;font-size:32px;" >╮(╯_╰)╭</h1><br/><br/><h4 style="text-align: center;" >请在浏览器中打开。</h4><br/><h4 style="text-align: center;" >Please open in the browser.</h4>');
+  window.stop ? window.stop() : document.execCommand("Stop");
+}
+</script>
+
+
+</head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <nav id="upper-nav" class="inner">
+      <a id="main-nav-toggle" class="nav-icon"></a>
+      <div class="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        
+          <a id="nav-github" class="nav-icon" href="https://github.com/liuyu1994"></a>
+        
+      </div>
+    </nav>
+    <div id="header-title">
+      
+        <h1 id="blog-title-wrap">
+          <a href="/" id="blog-title">Lyouth&#39;s Blog</a>
+        </h1>
+      
+    </div>
+    <div id="contenedor">
+      <ul class="cube">
+        <li class="cara">MyLogo</li>
+        <li class="cara"></li>
+        <li class="cara"></li>
+        <li class="cara"></li>
+        <li class="cara"></li>
+        <li class="cara"></li>
+      </ul>
+    </div>
+    <nav id="main-nav">
+      
+        <a class="main-nav-link" href="/">Home</a>
+      
+        <a class="main-nav-link" href="/archives">Archives</a>
+      
+        <a class="main-nav-link" href="/about">About</a>
+      
+      <a class="main-nav-link st-search-show-outputs">Search</a>
+    </nav>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main"><article id="post-CentOs-7-install-environment" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <h3 href="/2017/09/08/CentOs-7-install-environment/" class="article-date">
+  <time datetime="2017-09-08T08:09:11.000Z" itemprop="datePublished">2017-09-08</time>
+</h3>
+    
+  </div>
+  <div class="article-inner">
+  <div class="curve-down">
+  <div class="fill-content">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      CentOs 7下安装JAVA环境
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <h3 id="1-安装MySQL"><a href="#1-安装MySQL" class="headerlink" title="1.安装MySQL"></a>1.安装MySQL</h3><h5 id="CentOS-7的yum源中貌似没有正常安装MySQL时的MySql-sever文件，需要去官网上下载-分为三个步骤："><a href="#CentOS-7的yum源中貌似没有正常安装MySQL时的MySql-sever文件，需要去官网上下载-分为三个步骤：" class="headerlink" title="CentOS 7的yum源中貌似没有正常安装MySQL时的MySql-sever文件，需要去官网上下载,分为三个步骤："></a>CentOS 7的yum源中貌似没有正常安装MySQL时的MySql-sever文件，需要去官网上下载,分为三个步骤：</h5><p><code>wget http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm</code><br><code>rpm -ivh mysql-community-release-el7-5.noarch.rpm</code><br><code>yum install mysql-community-server</code><br><a id="more"></a></p>
+<h5 id="成功安装之后重启mysql服务："><a href="#成功安装之后重启mysql服务：" class="headerlink" title="成功安装之后重启mysql服务："></a>成功安装之后重启mysql服务：</h5><p><code>service mysqld restart</code></p>
+<h5 id="初次安装mysql是root账户是没有密码的，设置密码的方法，先登录数据库；"><a href="#初次安装mysql是root账户是没有密码的，设置密码的方法，先登录数据库；" class="headerlink" title="初次安装mysql是root账户是没有密码的，设置密码的方法，先登录数据库；"></a>初次安装mysql是root账户是没有密码的，设置密码的方法，先登录数据库；</h5><p><code>use mysql;</code><br><code>UPDATE user SET Password=PASSWORD(&#39;yourpassword&#39;)where USER=&#39;root&#39;;</code><br><code>flush privileges;</code></p>
+<h5 id="远程授权连接mysql-可以使用第三方可视化管理工具进行连接，这里是针对服务器的"><a href="#远程授权连接mysql-可以使用第三方可视化管理工具进行连接，这里是针对服务器的" class="headerlink" title="远程授权连接mysql(可以使用第三方可视化管理工具进行连接，这里是针对服务器的)"></a>远程授权连接mysql(可以使用第三方可视化管理工具进行连接，这里是针对服务器的)</h5><p><code>GRANT ALL PRIVILEGES ON *.* TO&#39;root&#39;@&#39;%&#39; IDENTIFIED BY &#39;mypassword&#39; WITH GRANT OPTION;</code><br><code>FLUSH   PRIVILEGES;</code></p>
+<hr>
+<h3 id="2-安装JDK"><a href="#2-安装JDK" class="headerlink" title="2.安装JDK"></a>2.安装JDK</h3><h5 id="a-检测是否安装了jdk-运行java-version"><a href="#a-检测是否安装了jdk-运行java-version" class="headerlink" title="a.检测是否安装了jdk  运行java -version"></a>a.检测是否安装了jdk  运行java -version</h5><h5 id="b-若有需要将其卸载"><a href="#b-若有需要将其卸载" class="headerlink" title="b.若有需要将其卸载"></a>b.若有需要将其卸载</h5><h5 id="c-查看安装那些jdk"><a href="#c-查看安装那些jdk" class="headerlink" title="c.查看安装那些jdk"></a>c.查看安装那些jdk</h5><p><code>rpm -qa | grep java</code></p>
+<h5 id="d-卸载"><a href="#d-卸载" class="headerlink" title="d.卸载"></a>d.卸载</h5><p>先卸载 openjdk 1.7<br><code>rpm -e --nodeps 卸载的包</code><br><code>rpm -e --nodeps java-1.7.0-openjdk-1.7.0.45-2.4.3.3.el6.i686</code></p>
+<p>再卸载 openjdk 1.6<br><code>rpm -e --nodeps java-1.6.0-openjdk-1.6.0.0-1.66.1.13.0.el6.i686</code></p>
+<h5 id="e-安装jdk"><a href="#e-安装jdk" class="headerlink" title="e.安装jdk"></a>e.安装jdk</h5><p>上传jdk 通过ftp软件上传(上传到root目录下)<br>在 /usr/local创建一个 java目录<br><code>mkdir java</code></p>
+<p>将上传的jdk复制到 java目录下<br><code>cp /root/jdk.xxxxx.tar /usr/local/java</code></p>
+<p>将其解压<br><code>tar -xvf jdk.xxx.tar</code></p>
+<h5 id="f-安装依赖"><a href="#f-安装依赖" class="headerlink" title="f.安装依赖"></a>f.安装依赖</h5><p><code>yum install glibc.i686</code></p>
+<p>g.配置环境变量<br>编辑<br><code>vi /etc/profile</code><br>在文件最后添加一下信息<br><code>#set java environment</code><br><code>JAVA_HOME=/usr/local/java/jdk目录</code><br><code>CLASSPATH=.:$JAVA_HOME/lib.tools.jar</code><br><code>PATH=$JAVA_HOME/bin:$PATH</code><br><code>export JAVA_HOME CLASSPATH PATH</code></p>
+<p>保存退出<br><code>source /etc/profile</code><br>使更改的配置立即生效</p>
+<hr>
+<h3 id="3-安装Tomcat"><a href="#3-安装Tomcat" class="headerlink" title="3.安装Tomcat"></a>3.安装Tomcat</h3><h5 id="a-在-usr-local-创建tomcat目录"><a href="#a-在-usr-local-创建tomcat目录" class="headerlink" title="a.在/usr/local/        创建tomcat目录"></a>a.在/usr/local/        创建tomcat目录</h5><h5 id="b-复制tomcat-到-usr-local-tomcat"><a href="#b-复制tomcat-到-usr-local-tomcat" class="headerlink" title="b.复制tomcat 到 /usr/local/tomcat"></a>b.复制tomcat 到 /usr/local/tomcat</h5><h5 id="c-解压tomcat"><a href="#c-解压tomcat" class="headerlink" title="c.解压tomcat"></a>c.解压tomcat</h5><h5 id="d-启动tomcat-进入-bin"><a href="#d-启动tomcat-进入-bin" class="headerlink" title="d.启动tomcat 进入 bin"></a>d.启动tomcat 进入 bin</h5><p>方式1:<br><code>sh startup.sh</code><br>方式2:<br><code>./startup.sh</code></p>
+<h5 id="e-开启端口号-8080"><a href="#e-开启端口号-8080" class="headerlink" title="e.开启端口号 8080"></a>e.开启端口号 8080</h5><p>8080端口放行<br><code>/sbin/iptables -I INPUT -p tcp --dport 8080 -j ACCEPT</code></p>
+<p>将该设置添加到防火墙的规则中<br><code>/etc/rc.d/init.d/iptables save</code></p>
+<p>注意:<br>查看日志文件<br><code>tail -f logs/catalina.out</code><br>退出 ctrl+c</p>
+<h3 id="大功告成"><a href="#大功告成" class="headerlink" title="大功告成~"></a>大功告成~</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <div class="article-footer-content">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+
+        <a data-url="https://www.liuyu.in/2017/09/08/CentOs-7-install-environment/" data-id="cjhq8kwpv0000cgukmueg0ec3" class="article-share-link">Share</a>
+        
+      </div>
+    </footer>
+  </div>
+  </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/04/26/MyBatisTrendsSQL/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          MyBatis之动态SQL
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/05/28/PracticeMysql/">MySQL语法查漏补缺</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/28/PracticeSpringMvc/">Spring MVC快速入门(一)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/28/PracticeJDBC/">Java学习笔记之JDBC</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/28/PracticeMyBatis/">初识MyBatis</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/28/MyBatisMappered/">MyBatis输入映射和输出映射</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Mvc/">Spring Mvc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdbc/">jdbc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/">mybatis</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Liuyu<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/sun11/hexo-theme-paperbox" target="_blank">Paperbox</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+  <a href="#search" class="mobile-nav-link st-search-show-outputs">Search</a>
+</nav>
+  
+
+<!-- totop start -->
+<div id="totop">
+	<a title="To Top"></a>
+</div>
+<!-- totop end -->
+
+<!-- swiftype search start -->
+
+<!-- swiftype search end -->
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/lrsjng.jquery-qrcode/0.12.0/jquery.qrcode.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>

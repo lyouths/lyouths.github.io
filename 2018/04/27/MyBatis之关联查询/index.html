@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  
+  <title>MyBatis之关联查询 | Lyouth&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="对于数据库中对表的增删改查操作，我们知道增删改都涉及的是单表，而只有查询操作既可以设计到单表操作又可以涉及到多表操作，所以对于输入映射parameterType而言是没有所谓的高级映射的，也就是说高级映射只针对于输出映射(因为高级映射设计到多张表)现有一个商品订单数据模型，如下：">
+<meta name="keywords" content="mybatis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MyBatis之关联查询">
+<meta property="og:url" content="https://www.liuyu.in/2018/04/27/MyBatis之关联查询/index.html">
+<meta property="og:site_name" content="Lyouth&#39;s Blog">
+<meta property="og:description" content="对于数据库中对表的增删改查操作，我们知道增删改都涉及的是单表，而只有查询操作既可以设计到单表操作又可以涉及到多表操作，所以对于输入映射parameterType而言是没有所谓的高级映射的，也就是说高级映射只针对于输出映射(因为高级映射设计到多张表)现有一个商品订单数据模型，如下：">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://owtr5yq3h.bkt.clouddn.com/%E8%AE%A2%E5%8D%95%E6%A8%A1%E5%9E%8B%E5%9B%BE.png">
+<meta property="og:updated_time" content="2018-04-27T07:36:03.417Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MyBatis之关联查询">
+<meta name="twitter:description" content="对于数据库中对表的增删改查操作，我们知道增删改都涉及的是单表，而只有查询操作既可以设计到单表操作又可以涉及到多表操作，所以对于输入映射parameterType而言是没有所谓的高级映射的，也就是说高级映射只针对于输出映射(因为高级映射设计到多张表)现有一个商品订单数据模型，如下：">
+<meta name="twitter:image" content="http://owtr5yq3h.bkt.clouddn.com/%E8%AE%A2%E5%8D%95%E6%A8%A1%E5%9E%8B%E5%9B%BE.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Lyouth&#39;s Blog" type="application/atom+xml">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+  
+<script type="text/javascript">
+var isWX = /micromessenger/i.test(navigator.userAgent);
+if (isWX) {
+  document.write('<br/><br/><h1 style="text-align: center;font-size:32px;" >╮(╯_╰)╭</h1><br/><br/><h4 style="text-align: center;" >请在浏览器中打开。</h4><br/><h4 style="text-align: center;" >Please open in the browser.</h4>');
+  window.stop ? window.stop() : document.execCommand("Stop");
+}
+</script>
+
+
+</head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <nav id="upper-nav" class="inner">
+      <a id="main-nav-toggle" class="nav-icon"></a>
+      <div class="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        
+          <a id="nav-github" class="nav-icon" href="https://github.com/liuyu1994"></a>
+        
+      </div>
+    </nav>
+    <div id="header-title">
+      
+        <h1 id="blog-title-wrap">
+          <a href="/" id="blog-title">Lyouth&#39;s Blog</a>
+        </h1>
+      
+    </div>
+    <div id="contenedor">
+      <ul class="cube">
+        <li class="cara">MyLogo</li>
+        <li class="cara"></li>
+        <li class="cara"></li>
+        <li class="cara"></li>
+        <li class="cara"></li>
+        <li class="cara"></li>
+      </ul>
+    </div>
+    <nav id="main-nav">
+      
+        <a class="main-nav-link" href="/">Home</a>
+      
+        <a class="main-nav-link" href="/archives">Archives</a>
+      
+        <a class="main-nav-link" href="/about">About</a>
+      
+      <a class="main-nav-link st-search-show-outputs">Search</a>
+    </nav>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main"><article id="post-MyBatis之关联查询" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <h3 href="/2018/04/27/MyBatis之关联查询/" class="article-date">
+  <time datetime="2018-04-27T01:07:55.000Z" itemprop="datePublished">2018-04-27</time>
+</h3>
+    
+  </div>
+  <div class="article-inner">
+  <div class="curve-down">
+  <div class="fill-content">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      MyBatis之关联查询
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <p>对于数据库中对表的增删改查操作，我们知道增删改都涉及的是单表，而只有查询操作既可以设计到单表操作又可以涉及到多表操作，所以对于输入映射parameterType而言是没有所谓的高级映射的，也就是说高级映射只针对于输出映射(因为高级映射设计到多张表)<br>现有一个<strong>商品订单数据模型</strong>，如下：<br><a id="more"></a><br><img src="http://owtr5yq3h.bkt.clouddn.com/%E8%AE%A2%E5%8D%95%E6%A8%A1%E5%9E%8B%E5%9B%BE.png" alt="商品订单数据模型"></p>
+<h2 id="1-一对一查询"><a href="#1-一对一查询" class="headerlink" title="1.一对一查询"></a>1.一对一查询</h2><p>案例：查询所有订单信息，关联查询下单用户信息。<br>注意：因为一个订单信息只会是一个人下的订单，所以从查询订单信息出发关联查询用户信息为一对一查询。如果从用户信息出发查询用户下的订单信息则为一对多查询，因为一个用户可以下多个订单。</p>
+<h3 id="1-1方法一-使用resultType实现"><a href="#1-1方法一-使用resultType实现" class="headerlink" title="1.1方法一(使用resultType实现)"></a>1.1方法一(使用resultType实现)</h3><p>使用resultType，定义订单信息po类，此po类中包括了订单信息和用户信息：<br>SQL语句如下:<code>SELECT orders.*,user.username,users.address FROM orders,user WHERE orders.user_id = user.id</code></p>
+<p>建立oders表和user表对应的pojo对象Orders.java和User.java<br>Orders对象<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Orders</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> Integer userId;</span><br><span class="line">    <span class="keyword">private</span> String number;</span><br><span class="line">    <span class="keyword">private</span> Date createtime;</span><br><span class="line">    <span class="keyword">private</span> String note;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>并建立相关的get和set方法，User.java我们之前已建立。<br>通过查询语句，查询到的结果同时包括user表和orders表两张表的列，那么我们将结果映射到哪个pojo对象中呢？若映射到User.java，那查询结果中对应的orders表的字段一定会遗失；若映射到Orders.java，那查询结果中对应的user表的字段同样也会遗失。所以这里需要我们针对查询的结果重新创建一个映射的pojo对象CustomOrders.java(包含返回所有属性的对象)<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomOrders</span> <span class="keyword">extends</span> <span class="title">Orders</span></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> uid;</span><br><span class="line">	<span class="keyword">private</span> String username;<span class="comment">// 用户姓名</span></span><br><span class="line">	<span class="keyword">private</span> String sex;<span class="comment">// 性别</span></span><br><span class="line">	<span class="keyword">private</span> Date birthday;<span class="comment">// 生日</span></span><br><span class="line">	<span class="keyword">private</span> String address;<span class="comment">// 地址</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>并建立相关的get和set方法<br>这里我们让CustomOrders.java继承自Orders.java，这样我们就只需在CustomOrders.java中添加user表中的字段即可。<br>这里我们让OrderCustom.java继承自Order.java，这样我们就只需在OrderCustom.java中添加user表中的字段即可。因为MyBatis主要的重点在sql语句，所以我们完成配置和pojo对象的建立后主要的点就放在了sql语句上，所以接下来要定义写sql语句的mapper.xml和对数据库进行操作的mapper.java接口了.<br>编写UserMapper.xml文件<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 一对一:自动映射 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findOrdersAndUser1"</span> <span class="attr">resultType</span>=<span class="string">"cn.liuyu.pojo.CustomOrders"</span>&gt;</span></span><br><span class="line"> select a.*, b.id uid, username, birthday, sex, address </span><br><span class="line"> from orders a, user b </span><br><span class="line"> where a.user_id = b.id</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>编写接口文件：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public List<span class="tag">&lt;<span class="name">CustomOrders</span>&gt;</span> findOrdersAndUser1();</span><br></pre></td></tr></table></figure></p>
+<p>先初始化会化工厂<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserMapperTest</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> SqlSessionFactory factory;</span><br><span class="line">	<span class="comment">//作用:在测试方法前执行这个方法</span></span><br><span class="line">	<span class="meta">@Before</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUp</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">	String resource = <span class="string">"SqlMapConfig.xml"</span>;</span><br><span class="line">	<span class="comment">//通过流将核心配置文件读取进来</span></span><br><span class="line">	InputStream inputStream = Resources.getResourceAsStream(resource);</span><br><span class="line">	<span class="comment">//通过核心配置文件输入流来创建会话工厂</span></span><br><span class="line">	factory = <span class="keyword">new</span> SqlSessionFactoryBuilder().build(inputStream);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>测试代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindOrdersAndUser</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">	SqlSession openSession = factory.openSession();</span><br><span class="line">	<span class="comment">//通过getMapper方法来实例化接口</span></span><br><span class="line">	UserMapper mapper = openSession.getMapper(UserMapper.class);</span><br><span class="line">	List&lt;CustomOrders&gt; list = mapper.findOrdersAndUser1();</span><br><span class="line">	System.out.println(list);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>定义专门的po类作为输出类型，其中定义了sql查询结果集所有的字段。此方法较为简单，企业中使用普遍。</p>
+<h3 id="1-2方法二-使用resultMap实现"><a href="#1-2方法二-使用resultMap实现" class="headerlink" title="1.2方法二(使用resultMap实现)"></a>1.2方法二(使用resultMap实现)</h3><p>思路:将关联查询的信息映射到pojo中，如下:只需在Orders类中创建一个User属性，将关联查询的信息映射到User属性中。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Orders</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> Integer userId;</span><br><span class="line">    <span class="keyword">private</span> String number;</span><br><span class="line">    <span class="keyword">private</span> Date createtime;</span><br><span class="line">    <span class="keyword">private</span> String note;</span><br><span class="line">    <span class="comment">//关联用户信息</span></span><br><span class="line">    <span class="keyword">private</span> User user;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样我们便可以将查询的结果映射到Orders.java类中，而不用自己再自定义一个pojo了。<br>编写UserMapper.xml文件，使用resultMap标签<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 一对一:手动映射 --&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- </span></span><br><span class="line"><span class="comment">	id:resultMap的唯一标识</span></span><br><span class="line"><span class="comment">	type:将查询出的数据放入这个指定的对象中</span></span><br><span class="line"><span class="comment">	注意:手动映射需要指定数据库中表的字段名与java中pojo类的属性名称的对应关系</span></span><br><span class="line"><span class="comment">	 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">type</span>=<span class="string">"cn.liuyu.pojo.Orders"</span> <span class="attr">id</span>=<span class="string">"orderAndUserResultMap"</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- id标签指定主键字段对应关系</span></span><br><span class="line"><span class="comment">	column:列,数据库中的字段名称</span></span><br><span class="line"><span class="comment">	property:属性,java中pojo中的属性名称</span></span><br><span class="line"><span class="comment">	--&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"id"</span> <span class="attr">property</span>=<span class="string">"id"</span>/&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- result:标签指定非主键字段的对应关系 --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"user_id"</span> <span class="attr">property</span>=<span class="string">"userId"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"number"</span> <span class="attr">property</span>=<span class="string">"number"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"createtime"</span> <span class="attr">property</span>=<span class="string">"createtime"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"note"</span> <span class="attr">property</span>=<span class="string">"note"</span>/&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 这个标签指定单个对象的对应关系 </span></span><br><span class="line"><span class="comment">		property:指定将数据放入Orders中的user属性中</span></span><br><span class="line"><span class="comment">		javaType:user属性的类型</span></span><br><span class="line"><span class="comment">		--&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">association</span> <span class="attr">property</span>=<span class="string">"user"</span> <span class="attr">javaType</span>=<span class="string">"cn.liuyu.pojo.User"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"uid"</span> <span class="attr">property</span>=<span class="string">"id"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"username"</span> <span class="attr">property</span>=<span class="string">"username"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"birthday"</span> <span class="attr">property</span>=<span class="string">"birthday"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"sex"</span> <span class="attr">property</span>=<span class="string">"sex"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"address"</span> <span class="attr">property</span>=<span class="string">"address"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">association</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findOrdersAndUser2"</span> <span class="attr">resultMap</span>=<span class="string">"orderAndUserResultMap"</span>&gt;</span></span><br><span class="line">	select a.*, b.id uid, username, birthday, sex, address</span><br><span class="line">	from orders a, user b </span><br><span class="line">	where a.user_id = b.id</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>编写接口方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Orders&gt; <span class="title">findOrdersAndUser2</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>测试代码:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindOrdersAnduUser2</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">	SqlSession openSession = factory.openSession();</span><br><span class="line">	<span class="comment">//通过getMapper方法来实例化接口</span></span><br><span class="line">	UserMapper mapper = openSession.getMapper(UserMapper.class);</span><br><span class="line">	List&lt;Orders&gt; list = mapper.findOrdersAndUser2();</span><br><span class="line">	System.out.println(list);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用association完成关联查询，将关联查询信息映射到pojo对象中。</p>
+<h3 id="1-3比较resultType和resultMap完成一对一映射"><a href="#1-3比较resultType和resultMap完成一对一映射" class="headerlink" title="1.3比较resultType和resultMap完成一对一映射"></a>1.3比较resultType和resultMap完成一对一映射</h3><ul>
+<li>resultType：要自定义pojo 保证sql查询列和pojo的属性对应，这种方法相对较简单，所以应用广泛。</li>
+<li>resultType：要自定义pojo 保证sql查询列和pojo的属性对应，这种方法相对较简单，所以应用广泛。</li>
+</ul>
+<h2 id="2-一对多查询"><a href="#2-一对多查询" class="headerlink" title="2.一对多查询"></a>2.一对多查询</h2><p>需求：查询所有用户信息及用户关联的订单信息<br>用户信息和订单信息为一对多关系。<br>使用resultMap实现如下：</p>
+<p>Sql语句:<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> a.*, b.id <span class="keyword">oid</span> ,user_id, <span class="built_in">number</span>, createtime <span class="keyword">from</span> <span class="keyword">user</span> a, orders b <span class="keyword">where</span> a.id = b.user_id</span><br></pre></td></tr></table></figure></p>
+<p>编写User类<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> id;</span><br><span class="line">	<span class="keyword">private</span> String username;<span class="comment">// 用户姓名</span></span><br><span class="line">	<span class="keyword">private</span> String sex;<span class="comment">// 性别</span></span><br><span class="line">	<span class="keyword">private</span> Date birthday;<span class="comment">// 生日</span></span><br><span class="line">	<span class="keyword">private</span> String address;<span class="comment">// 地址</span></span><br><span class="line">	<span class="comment">//关联订单信息</span></span><br><span class="line">	<span class="keyword">private</span> List&lt;Orders&gt; ordersList;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>编写UserMapper映射文件<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">type</span>=<span class="string">"cn.liuyu.pojo.User"</span> <span class="attr">id</span>=<span class="string">"userAndOrdersResultMap"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"id"</span> <span class="attr">property</span>=<span class="string">"id"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"username"</span> <span class="attr">property</span>=<span class="string">"username"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"birthday"</span> <span class="attr">property</span>=<span class="string">"birthday"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"sex"</span> <span class="attr">property</span>=<span class="string">"sex"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"address"</span> <span class="attr">property</span>=<span class="string">"address"</span>/&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 指定对应的集合对象关系映射</span></span><br><span class="line"><span class="comment">	property:将数据放入User对象中的ordersList属性中</span></span><br><span class="line"><span class="comment">	ofType:指定ordersList属性的泛型类型</span></span><br><span class="line"><span class="comment">	 --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">collection</span> <span class="attr">property</span>=<span class="string">"ordersList"</span> <span class="attr">ofType</span>=<span class="string">"cn.liuyu.pojo.Orders"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"oid"</span> <span class="attr">property</span>=<span class="string">"id"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"user_id"</span> <span class="attr">property</span>=<span class="string">"userId"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"number"</span> <span class="attr">property</span>=<span class="string">"number"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"createtime"</span> <span class="attr">property</span>=<span class="string">"createtime"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">collection</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUserAndOrders"</span> <span class="attr">resultMap</span>=<span class="string">"userAndOrdersResultMap"</span>&gt;</span></span><br><span class="line"> select a.*, b.id oid ,user_id, number, createtime </span><br><span class="line"> from user a, orders b where a.id = b.user_id</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>编写接口文件:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> List&lt;User&gt; <span class="title">findUserAndOrders</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>测试代码:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindUserAndOrders</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">	SqlSession openSession = factory.openSession();</span><br><span class="line">	<span class="comment">//通过getMapper方法来实例化接口</span></span><br><span class="line">	UserMapper mapper = openSession.getMapper(UserMapper.class);</span><br><span class="line">	List&lt;User&gt; list = mapper.findUserAndOrders();</span><br><span class="line">	System.out.println(list);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>发现查询的结果已全部映射到pojo对象User.java的属性中。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <div class="article-footer-content">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mybatis/">mybatis</a></li></ul>
+
+        <a data-url="https://www.liuyu.in/2018/04/27/MyBatis之关联查询/" data-id="cjhq8kwrk000ncgukpkyohrac" class="article-share-link">Share</a>
+        
+      </div>
+    </footer>
+  </div>
+  </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/05/28/JDK8-Lambda/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          JDK8新特性之Lambda表达式
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/04/26/MyBatisTrendsSQL/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">MyBatis之动态SQL</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/05/28/PracticeMysql/">MySQL语法查漏补缺</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/28/PracticeSpringMvc/">Spring MVC快速入门(一)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/28/PracticeJDBC/">Java学习笔记之JDBC</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/28/PracticeMyBatis/">初识MyBatis</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/28/MyBatisMappered/">MyBatis输入映射和输出映射</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Mvc/">Spring Mvc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdbc/">jdbc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/">mybatis</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Liuyu<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/sun11/hexo-theme-paperbox" target="_blank">Paperbox</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+  <a href="#search" class="mobile-nav-link st-search-show-outputs">Search</a>
+</nav>
+  
+
+<!-- totop start -->
+<div id="totop">
+	<a title="To Top"></a>
+</div>
+<!-- totop end -->
+
+<!-- swiftype search start -->
+
+<!-- swiftype search end -->
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/lrsjng.jquery-qrcode/0.12.0/jquery.qrcode.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>

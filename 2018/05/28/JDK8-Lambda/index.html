@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  
+  <title>JDK8新特性之Lambda表达式 | Lyouth&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Iterator接口大家肯定不会陌生，遍历集合用到的最多。同时它也是为集合而生，没有集合它也就没有意义。具体用法此处不在说明，主要谈谈新特性。有人会说，JDK9已经发布了，为什么还要研究JDK8的特性呢?其实大多数新特性我们暂时不会用到。之所以谈谈JDK8的新特性，个人觉得用到的挺多，而且还能减少代码量和提高效率。">
+<meta name="keywords" content="java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JDK8新特性之Lambda表达式">
+<meta property="og:url" content="https://www.liuyu.in/2018/05/28/JDK8-Lambda/index.html">
+<meta property="og:site_name" content="Lyouth&#39;s Blog">
+<meta property="og:description" content="Iterator接口大家肯定不会陌生，遍历集合用到的最多。同时它也是为集合而生，没有集合它也就没有意义。具体用法此处不在说明，主要谈谈新特性。有人会说，JDK9已经发布了，为什么还要研究JDK8的特性呢?其实大多数新特性我们暂时不会用到。之所以谈谈JDK8的新特性，个人觉得用到的挺多，而且还能减少代码量和提高效率。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-04-20T14:30:29.210Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JDK8新特性之Lambda表达式">
+<meta name="twitter:description" content="Iterator接口大家肯定不会陌生，遍历集合用到的最多。同时它也是为集合而生，没有集合它也就没有意义。具体用法此处不在说明，主要谈谈新特性。有人会说，JDK9已经发布了，为什么还要研究JDK8的特性呢?其实大多数新特性我们暂时不会用到。之所以谈谈JDK8的新特性，个人觉得用到的挺多，而且还能减少代码量和提高效率。">
+  
+    <link rel="alternative" href="/atom.xml" title="Lyouth&#39;s Blog" type="application/atom+xml">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link href="//fonts.useso.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+  
+<script type="text/javascript">
+var isWX = /micromessenger/i.test(navigator.userAgent);
+if (isWX) {
+  document.write('<br/><br/><h1 style="text-align: center;font-size:32px;" >╮(╯_╰)╭</h1><br/><br/><h4 style="text-align: center;" >请在浏览器中打开。</h4><br/><h4 style="text-align: center;" >Please open in the browser.</h4>');
+  window.stop ? window.stop() : document.execCommand("Stop");
+}
+</script>
+
+
+</head>
+
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <nav id="upper-nav" class="inner">
+      <a id="main-nav-toggle" class="nav-icon"></a>
+      <div class="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        
+          <a id="nav-github" class="nav-icon" href="https://github.com/liuyu1994"></a>
+        
+      </div>
+    </nav>
+    <div id="header-title">
+      
+        <h1 id="blog-title-wrap">
+          <a href="/" id="blog-title">Lyouth&#39;s Blog</a>
+        </h1>
+      
+    </div>
+    <div id="contenedor">
+      <ul class="cube">
+        <li class="cara">MyLogo</li>
+        <li class="cara"></li>
+        <li class="cara"></li>
+        <li class="cara"></li>
+        <li class="cara"></li>
+        <li class="cara"></li>
+      </ul>
+    </div>
+    <nav id="main-nav">
+      
+        <a class="main-nav-link" href="/">Home</a>
+      
+        <a class="main-nav-link" href="/archives">Archives</a>
+      
+        <a class="main-nav-link" href="/about">About</a>
+      
+      <a class="main-nav-link st-search-show-outputs">Search</a>
+    </nav>
+  </div>
+</header>
+
+    <div class="outer">
+      <section id="main"><article id="post-JDK8-Lambda" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <h3 href="/2018/05/28/JDK8-Lambda/" class="article-date">
+  <time datetime="2018-05-28T12:35:50.564Z" itemprop="datePublished">2018-05-28</time>
+</h3>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+  <div class="curve-down">
+  <div class="fill-content">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JDK8新特性之Lambda表达式
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <p>Iterator接口大家肯定不会陌生，遍历集合用到的最多。同时它也是为集合而生，没有集合它也就没有意义。具体用法此处不在说明，主要谈谈新特性。<br>有人会说，JDK9已经发布了，为什么还要研究JDK8的特性呢?其实大多数新特性我们暂时不会用到。之所以谈谈JDK8的新特性，个人觉得用到的挺多，而且还能减少代码量和提高效率。</p>
+<a id="more"></a>
+<hr>
+<p>本文主要介绍Lambda操作集合的三种用法</p>
+<blockquote>
+<p><em>使用Lambda表达式遍历集合
+</em>使用Lambda表达式遍历Iterator<br>*使用Java8新增的Predicate操作集合</p>
+</blockquote>
+<h2 id="使用Lambda表达式遍历集合"><a href="#使用Lambda表达式遍历集合" class="headerlink" title="使用Lambda表达式遍历集合"></a>使用Lambda表达式遍历集合</h2><p>JDK8为Iterable接口新增了一个ForEach（Consumer action)默认方法，该方法也是遍历集合的，所需要的参数类型是一个<code>函数式接口</code>，而Iterable接口是Collection接口的父接口，因此Collection集合也可以直接调用该方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public class CollectionEach &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Collection books=new HashSet();</span><br><span class="line">        books.add(&quot;java深入浅出&quot;);</span><br><span class="line">        books.add(&quot;java疯狂讲义&quot;);</span><br><span class="line">        books.add(&quot;java编程思想&quot;);</span><br><span class="line">        //调用forEach方法遍历集合</span><br><span class="line">        books.forEach(book -&gt; System.out.println(book));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="使用Lambda表达式遍历Iterator"><a href="#使用Lambda表达式遍历Iterator" class="headerlink" title="使用Lambda表达式遍历Iterator"></a>使用Lambda表达式遍历Iterator</h2><p>JDK8为Iterator新增了一个forEachRemaininging(Consumer action)方法，该方法所需的Consumer参数同样也是<code>函数式</code>接口。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class IteratorEach &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Collection books=new HashSet();</span><br><span class="line">        books.add(&quot;java深入浅出&quot;);</span><br><span class="line">        books.add(&quot;java疯狂讲义&quot;);</span><br><span class="line">        books.add(&quot;java编程思想&quot;);</span><br><span class="line">        Iterator iterator=books.iterator();</span><br><span class="line">        //使用Lambda表达式遍历集合元素</span><br><span class="line">        iterator.forEachRemaining(book -&gt; System.out.println(book));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="使用Java8新增的Predicate操作集合"><a href="#使用Java8新增的Predicate操作集合" class="headerlink" title="使用Java8新增的Predicate操作集合"></a>使用Java8新增的Predicate操作集合</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Collection books = new HashSet();</span><br><span class="line">        books.add(&quot;集合是个好定西&quot;);</span><br><span class="line">        books.add(&quot;机械键盘真好用&quot;);</span><br><span class="line">        books.add(&quot;薄膜键盘便宜但是不好用，寿命短&quot;);</span><br><span class="line">        books.add(&quot;机械键盘价格高，但是使用寿命长，打字效率高。&quot;);</span><br><span class="line">        books.add(&quot;还有三天就过年了！&quot;);</span><br><span class="line">        books.add(&quot;每天坚持写八个小时代码&quot;);</span><br><span class="line">        books.add(&quot;不会写代码的程序员不是好厨师&quot;);</span><br><span class="line">        books.add(&quot;快过年了&quot;);</span><br><span class="line">        books.add(&quot;好好写代码&quot;);</span><br><span class="line">        Iterator iterator = books.iterator();</span><br><span class="line">        System.out.println(callAll(books, obj -&gt; ((String) obj).contains(&quot;键盘&quot;)));</span><br><span class="line">        System.out.println(callAll(books, obj -&gt; ((String) obj).contains(&quot;过年&quot;)));</span><br><span class="line">        System.out.println(callAll(books, obj -&gt; ((String) obj).length() &gt; 10));</span><br><span class="line">        </span><br><span class="line">        public static int callAll(Collection collection, Predicate predicate) &#123;</span><br><span class="line">        int total = 0;</span><br><span class="line">        for (Object obj : collection) &#123;</span><br><span class="line">            //使用lambda作为参数</span><br><span class="line">            if ((predicate.test(obj))) &#123;</span><br><span class="line">                total++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return total;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>还有一种操作集合的用法，后续会更新。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <div class="article-footer-content">
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+
+        <a data-url="https://www.liuyu.in/2018/05/28/JDK8-Lambda/" data-id="cjhq8kwqm0005cgukw2g6new5" class="article-share-link">Share</a>
+        
+      </div>
+    </footer>
+  </div>
+  </div>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/05/28/MyBatisConfiger/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          MyBatis之配置文件中的配置
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/04/27/MyBatis之关联查询/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">MyBatis之关联查询</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/05/28/PracticeMysql/">MySQL语法查漏补缺</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/28/PracticeSpringMvc/">Spring MVC快速入门(一)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/28/PracticeJDBC/">Java学习笔记之JDBC</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/28/PracticeMyBatis/">初识MyBatis</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/28/MyBatisMappered/">MyBatis输入映射和输出映射</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Mvc/">Spring Mvc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdbc/">jdbc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/">mybatis</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Liuyu<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/sun11/hexo-theme-paperbox" target="_blank">Paperbox</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+  <a href="#search" class="mobile-nav-link st-search-show-outputs">Search</a>
+</nav>
+  
+
+<!-- totop start -->
+<div id="totop">
+	<a title="To Top"></a>
+</div>
+<!-- totop end -->
+
+<!-- swiftype search start -->
+
+<!-- swiftype search end -->
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/lrsjng.jquery-qrcode/0.12.0/jquery.qrcode.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>
