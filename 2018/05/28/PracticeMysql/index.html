@@ -19,7 +19,7 @@
             reward:	true,
             lv: JSON.parse('{"enable":false,"app_id":null,"app_key":null,"icon":true}'),
             v: JSON.parse('{"enable":false,"appid":null,"appkey":null,"notify":true,"verify":true,"placeholder":"give me some sugers plz...","avatar":"wavatar"}'),
-            g: JSON.parse('{"enable":true,"lazy":false,"owner":"lyouths","repo":"gitments","oauth":{"client_id":"6b11102883049de9a634","client_secret":"491ace01af29a7dedb92d6b8200ba00bfc49b3d3"},"perPage":10}')
+            g: JSON.parse('{"enable":true,"lazy":true,"owner":"lyouths","repo":"gitments","oauth":{"client_id":"6b11102883049de9a634","client_secret":"491ace01af29a7dedb92d6b8200ba00bfc49b3d3"},"perPage":10}')
         };
     </script>
     <script type="text/javascript">
@@ -214,7 +214,7 @@
         <i class="icon icon-comment-o"></i>
     </span>
     
-    <a href="/2018/05/28/PracticeMysql/#gitment" onclick="ShowGitment()">
+    <a href="/2018/05/28/PracticeMysql/#gitment-display-button" onclick="ShowGitment()">
         <span class="post-comments-count gitment-comments-count" itemprop="commentsCount"></span>
     </a>
 </span>
@@ -573,28 +573,24 @@
 
 
       
-    <div id="gitment"></div>
+    <div onclick="ShowGitment()" id="gitment-display-button" style="display: block;">
+        <span>显示 Gitment 评论</span>
+    </div>
+    <div id="gitment" class="hide"></div>
 
 
 
         
     </div>
     
-<nav class="post-nav flex-row flex-justify-between">
-  
-    <div class="prev">
-      <a href="/2018/05/28/PracticeSpringMvc/" id="post-prev" class="post-nav-link">
-        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
-        <h4 class="title">Spring MVC快速入门(一)</h4>
-      </a>
-    </div>
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
   
 
   
     <div class="next">
-      <a href="/2018/05/28/PracticeJDBC/" id="post-next" class="post-nav-link">
+      <a href="/2018/05/28/PracticeSpringMvc/" id="post-next" class="post-nav-link">
         <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">Java学习笔记之JDBC</h4>
+        <h4 class="title">Spring MVC快速入门(一)</h4>
       </a>
     </div>
   
